@@ -42,4 +42,4 @@ Every project, whatever its type, has a registry record, a page on the lab site,
 
 Idea → Explore → Define → Build → Review → Launch → Operate → Improve or Archive. Not every project uses every stage.
 
-Public status labels: **In the lab** (being built), **Live**, **Paused**, **Archived**. Archived projects stay on the site with a note on what was learned. Showing what didn't work is part of the brand.
+Status labels (**In the lab**, **Live**, **Paused**, **Archived**) are internal: the registry and Lab Desk use them. The site shows only finished work: live projects, plus archived ones marked "No longer updated" with a note on what was learned. Showing what didn't work is part of the brand. Nothing in progress appears on the site; it's covered in the lab dispatch.
