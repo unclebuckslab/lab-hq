@@ -39,6 +39,7 @@ Claude Projects and other tools read these files by link, never as uploaded copi
 | --- | --- |
 | [playbooks/data-product.md](playbooks/data-product.md) | Building a data source to pipeline to page product |
 | [playbooks/report.md](playbooks/report.md) | Building a recurring, sourced report |
+| [playbooks/weekly-briefing.md](playbooks/weekly-briefing.md) | What the weekly briefing checks and how it reports |
 | [templates/project/](templates/project/) | The starting files for a new project repo |
 
 ## Coming next
