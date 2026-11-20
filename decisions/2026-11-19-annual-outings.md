@@ -22,7 +22,7 @@ From the [V1 Plan](https://claude.ai/artifact/H7CgPgaF5gsSNC7f3aSg29). Every one
 
 | # | Decision |
 | --- | --- |
-| Scope | V1 is the Build Plan's R0 and R1, live Mon Dec 14 for two friend crews; R2, experiments, pricing and strangers wait |
+| Scope | V1 is the Build Plan's R0, R1 and the thin R2 back half (Go card, debrief, Year-2 hold), live Mon Dec 14 for two friend crews; experiments, pricing and strangers wait |
 | A2 | Cloudflare Worker, Hono, D1, plain SQL |
 | A3 | Private answers not encrypted in V1; private fields stay off admin and backups get their own token. Encrypt before strangers |
 | A5 | Email sends from a subdomain of unclebuckslab.com |
