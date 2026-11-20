@@ -63,7 +63,7 @@ milestones:
     after: [M1]
     est_hours: 12
     actual_hours: null
-    status: not-started
+    status: in-progress
     done_means: Three subagents and three skills with eval gold sets; read/act boundary enforced; scheduled headless briefing and ops check in Actions; away runbook written.
 
   - id: S2
