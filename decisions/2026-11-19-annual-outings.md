@@ -10,11 +10,11 @@ Made Nov 19, 2026, in chat.
 | The build is documented as content, and what works is packaged into Kits and blueprints | People pay for how it's built, not for using the app. This follows the lab's revenue model |
 | It runs on its own timeline, separate from the lab launch (L1), but a real V1 ships soon | The launch's 36 hours stay protected without parking the product |
 | Reader and user data is never sold or shared ([MONEY_RULES.md](../handbook/MONEY_RULES.md) rule 5 applies) | Any later money must come from somewhere other than users' data |
+| Added Nov 20: no tracking ads, and any referral link is clearly disclosed | Settled before the first crew joins, because it shapes what data the app collects |
 
 ## Still open
 
-- Which other ways of making money are allowed later, such as disclosed referral links or sponsorships, and which are ruled out. Decide before the first real users, because it shapes what data the app collects.
-- Nothing else for V1. The Nov 19 Decision Brief is superseded by the V1 decisions below.
+- Nothing for V1. The Nov 19 Decision Brief is superseded by the V1 decisions below, and the build-plan decisions are in the annual-outings repo.
 
 ## V1 decisions, Nov 19
 
