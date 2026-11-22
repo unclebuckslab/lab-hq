@@ -31,6 +31,7 @@ Every `repo` in [registry/projects.yaml](../registry/projects.yaml), plus `uncle
 6. **Shipped.** PRs merged this week, one line each.
 7. **Milestones.** From [registry/milestones.yaml](../registry/milestones.yaml): what is in progress, and what launch (L1) is still waiting on.
 8. **Tokens.** If `lab-desk/token-expiry.md` exists, list tokens expiring within 14 days.
+9. **Source overlap.** Run `python registry/validate.py --report` in lab-hq. Flag any source pulled by more than one repo outside `lab-data`, any source a project pulls that isn't in `registry/sources.yaml`, and any license check older than a year.
 
 ## Issue format
 
@@ -55,6 +56,9 @@ Plain and short. Lead with what needs action.
 ## Milestones
 - In progress: ...
 - Launch is waiting on: ...
+
+## Sources
+- Overlap, unregistered pulls, stale license checks ("Nothing" if clean)
 
 Couldn't check: (repos or sources that failed, or "nothing")
 ```

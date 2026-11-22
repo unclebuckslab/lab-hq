@@ -1,0 +1,881 @@
+# Every data source the lab pulls or has approved for use. One record each.
+# Fields are defined in registry/README.md. Run `python registry/validate.py` after any edit.
+#
+# Rules (decisions/2026-11-21-lab-data-layer.md):
+# - A project pulls only from a source listed here, and publishes it only where `publish` is true.
+# - Tiers are set by the founder. A new source is added with a proposed tier and `tier_approved: null`.
+# - License checks are dated, re-checked yearly or when a publisher changes its terms. They are a
+#   good-faith reading of published terms, not legal advice.
+# - State and local government data is not automatically public domain; each gets its own check.
+# - Ingest from the original publisher and credit it. Discovery tools (bottom of file) are never the credit.
+#
+# Built Nov 21, 2026 from DorkGraphs' source library v0.2 (sources 1-34), the AI Money Report's
+# config/sources.yaml and hand-kept tables, and the Denver dashboard's handbook/DATA.md.
+
+sources:
+
+  # ---------------------------------------------------------------- Federal statistics
+
+  - id: bls
+    name: Bureau of Labor Statistics
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: Bureau of Labor Statistics
+    covers: Inflation (CPI), employment and unemployment (CPS, CES), wages by occupation (OEWS), time use (ATUS), consumer spending (CE), employment projections.
+    known_breaks:
+      - CPS redesign in 1994.
+      - CPI methodology changes over time; use R-CPI-U-RS for long comparisons.
+      - Occupation classification changes (SOC 2010, SOC 2018).
+    access: API and bulk downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs, denver-sales]
+    notes: Denver pulls CPI-U (CPIAUCSL) through FRED and credits FRED; it should pull from BLS and credit BLS. Fix when the Denver repo moves into the lab org.
+
+  - id: census
+    name: Census Bureau
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: U.S. Census Bureau
+    covers: American Community Survey, CPS income and poverty supplement, decennial census, population estimates, state and local government finances, Monthly Retail Trade, Value of Construction Put in Place (data center construction).
+    known_breaks:
+      - 2020 ACS 1-year estimates were released only as experimental data; don't treat 2020 as a normal year.
+      - CPS income questions were redesigned for 2013 income data; trends across that year need the bridge file or a caveat.
+      - The new combined race and ethnicity question (SPD 15) enters ACS collection in 2027; first 1-year estimates on it in Sept 2028.
+      - 2020 decennial small-area counts include deliberate privacy noise; avoid very small geographies.
+      - Construction spending on data centers is broken out only in the published annual tables, from 2014; the API stops at "Office".
+    access: API (data.census.gov) and published tables
+    status: active
+    publish: true
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/census/, schedule: monthly (5th)}
+    used_by: [ai-money-report, dorkgraphs]
+    notes: null
+
+  - id: bea
+    name: Bureau of Economic Analysis
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: Bureau of Economic Analysis
+    covers: GDP, personal income by state and county, Regional Price Parities, PCE price index.
+    known_breaks:
+      - Comprehensive revisions rewrite history; early GDP estimates are preliminary and labeled as such.
+    access: API and bulk zips
+    status: active
+    publish: true
+    pipelines:
+      - {repo: unclebuckslab/dorkgraphs, path: pipeline/ingest/bea_regional.py, schedule: manual}
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: federal-reserve-board
+    name: Federal Reserve Board
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions:
+      - Credit the Board. Board seals and logos need permission; third-party material on the site is excluded.
+    credit: Federal Reserve Board
+    covers: Distributional Financial Accounts (wealth by group, quarterly since 1989), Survey of Consumer Finances (every three years).
+    known_breaks:
+      - Generation definitions follow the Board's birth-year cutoffs; DFA history begins in 1989.
+    access: downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: cdc-nchs
+    name: CDC National Center for Health Statistics (CDC WONDER)
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared-with-conditions
+    license_checked: 2026-11-09
+    conditions:
+      - Never publish statistics representing nine or fewer births or deaths, including rates built on them.
+      - Lab rule on top of that - no rate built on fewer than 20 events.
+      - Never try to identify a person or establishment, and never study the privacy protections themselves.
+    credit: CDC National Center for Health Statistics
+    covers: Deaths by cause, births, life expectancy, health measures by state and county.
+    known_breaks:
+      - Cause-of-death coding moved from ICD-9 to ICD-10 in 1999; causes aren't directly comparable across that line.
+      - Final annual data lags about two years; provisional data is labeled preliminary.
+    access: WONDER query tool and API
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: cms
+    name: Centers for Medicare & Medicaid Services
+    tier: A
+    tier_approved: null
+    license: confirm
+    license_checked: null
+    conditions: []
+    credit: Centers for Medicare & Medicaid Services
+    covers: Health insurance marketplace enrollment (effectuated enrollment, open enrollment reports), data.cms.gov datasets.
+    known_breaks:
+      - Plan selections at open enrollment and effectuated (paid-up) enrollment are different measures; never mix them on one chart.
+    access: data.cms.gov catalog and downloads
+    status: active
+    publish: false
+    pipelines:
+      - {repo: unclebuckslab/dorkgraphs, path: pipeline/ingest/fetch_sources.py, schedule: manual}
+    used_by: [dorkgraphs]
+    notes: Pulled for DorkGraphs report r001 but missing from DorkGraphs' source library. Proposed tier A; needs the founder's tier approval and a license check (federal work, so likely cleared) before r001 publishes.
+
+  - id: treasury
+    name: U.S. Treasury (Fiscal Data, USAspending)
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: U.S. Treasury
+    covers: Federal revenue, spending, deficits and debt; spending by agency and program.
+    known_breaks:
+      - Fiscal years run October to September; program classifications change over time.
+    access: API
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: cbo
+    name: Congressional Budget Office
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: Congressional Budget Office
+    covers: Cost estimates for bills, budget and economic projections, distributional analyses.
+    known_breaks:
+      - Projection baselines are revised; always state which baseline year is used, and use CBO's published ranges as the uncertainty band.
+    access: downloads (CBO blocks automated downloads; ingest uses the Internet Archive's unmodified copy and records both URLs)
+    status: active
+    publish: true
+    pipelines:
+      - {repo: unclebuckslab/dorkgraphs, path: pipeline/ingest/fetch_sources.py, schedule: manual}
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: irs-soi
+    name: IRS Statistics of Income
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: IRS Statistics of Income
+    covers: Tax returns by income level and state; who pays what share of income tax.
+    known_breaks:
+      - Tax law changes alter what "income" includes on returns; comparisons across major changes need a caveat.
+    access: downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: college-scorecard
+    name: College Scorecard (Department of Education)
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared-with-conditions
+    license_checked: 2026-11-09
+    conditions:
+      - CC BY on data.gov - attribution required.
+    credit: U.S. Department of Education, College Scorecard
+    covers: Cost, debt, graduation and earnings by college and field of study.
+    known_breaks:
+      - Earnings cover students who received federal aid, not all students; measures and cohorts change across releases. Every use states the cohort definition.
+    access: API and downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: eia
+    name: Energy Information Administration
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: U.S. Energy Information Administration
+    covers: Gas prices, electricity prices (residential retail price by state), energy production and use, official projections.
+    known_breaks: []
+    access: API (needs EIA_API_KEY)
+    status: active
+    publish: true
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/eia/, schedule: monthly (3rd)}
+    used_by: [ai-money-report, dorkgraphs]
+    notes: null
+
+  - id: noaa-ncei
+    name: NOAA National Centers for Environmental Information
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: NOAA National Centers for Environmental Information
+    covers: Temperature, precipitation, extreme weather, climate records by state and city.
+    known_breaks:
+      - Station changes and dataset versions; use the published, adjusted climate series, not raw station data.
+    access: API and downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: fbi-bjs
+    name: FBI Crime Data Explorer and Bureau of Justice Statistics
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: FBI Uniform Crime Reporting Program; Bureau of Justice Statistics
+    covers: Reported crime by state and agency (FBI); victimization surveys including unreported crime (BJS NCVS).
+    known_breaks:
+      - The 2021 switch to NIBRS-only reporting; trends crossing 2020-2022 need the FBI's estimated trend data and a caveat.
+      - Reported crime and victimization measure different things and are never mixed on one chart.
+    access: API
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: ssa
+    name: Social Security Administration
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: Social Security Administration
+    covers: Baby names by year and state, benefits, Trustees' long-range projections.
+    known_breaks:
+      - Baby-name data suppresses names given to fewer than five children in a year.
+    access: downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: usda-ers-food
+    name: USDA Economic Research Service, Food Availability (Per Capita) Data System
+    tier: A
+    tier_approved: 2026-11-10
+    license: cleared
+    license_checked: 2026-11-10
+    conditions: []
+    credit: USDA Economic Research Service
+    covers: Pounds per person of several hundred foods available each year; a loss-adjusted series from 1970.
+    known_breaks:
+      - Availability is supply, not intake; say "available per person" unless using the loss-adjusted series and saying so.
+    access: downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: tsa
+    name: TSA checkpoint throughput
+    tier: A
+    tier_approved: 2026-11-10
+    license: cleared
+    license_checked: 2026-11-10
+    conditions: []
+    credit: Transportation Security Administration
+    covers: People screened at airport checkpoints, daily nationally and hourly by airport.
+    known_breaks:
+      - Counts screenings, not unique travelers; compare the same weekday year over year.
+    access: downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: bts
+    name: Bureau of Transportation Statistics
+    tier: A
+    tier_approved: 2026-11-10
+    license: cleared
+    license_checked: 2026-11-10
+    conditions: []
+    credit: Bureau of Transportation Statistics
+    covers: Airline passengers and routes, delays, freight, driving, transport costs.
+    known_breaks: []
+    access: TranStats downloads and APIs
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: foreign-assistance
+    name: ForeignAssistance.gov
+    tier: A
+    tier_approved: 2026-11-10
+    license: cleared
+    license_checked: 2026-11-10
+    conditions: []
+    credit: ForeignAssistance.gov (U.S. Department of State and USAID)
+    covers: U.S. foreign assistance by country, agency and sector, back to 1946.
+    known_breaks:
+      - Obligations and disbursements are different measures, never mixed on one chart; recent years are revised; military aid accounting differs from economic aid.
+    access: downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  # ---------------------------------------------------------------- Money, filings and power
+
+  - id: sec-edgar
+    name: SEC EDGAR filings
+    tier: A
+    tier_approved: 2026-11-10
+    license: cleared-with-conditions
+    license_checked: 2026-11-10
+    conditions:
+      - Declare a user agent with a contact email, stay under 10 requests per second, download only what is needed.
+      - Word company figures as what the company reported.
+      - 13F covers only certain U.S.-listed securities held by large managers, filed up to 45 days after the quarter; every 13F use says so.
+    credit: Company name and filing (e.g. "Company X, 2025 annual report (SEC filing)")
+    covers: Form D startup raises, company financials (XBRL company facts), insider trades (Form 4), capital raises (8-K items 1.01-2.03, prospectuses), 10-Q/10-K footnote commitments, executive pay (pay-versus-performance tags), 13F institutional holdings, cover-page share counts.
+    known_breaks:
+      - The archive returns 403, not 404, for a missing optional file; weekends have no daily index.
+      - Companies file the same item under different XBRL tags and switch tags over time; cash flow in 10-Qs is year to date.
+    access: EDGAR APIs, archives and bulk data sets
+    status: active
+    publish: true
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/form_d/, schedule: daily}
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/xbrl/, schedule: weekly (Tue)}
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/form4/, schedule: weekly (Mon)}
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/raises/, schedule: weekly (Wed)}
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/footnotes/, schedule: with financials}
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/ownership/, schedule: monthly (8th)}
+    used_by: [ai-money-report, dorkgraphs]
+    notes: The shared SEC client lives in ai-money-report pipelines/common/sec.py. Moves to lab-data only when a second project pulls SEC data.
+
+  - id: lda
+    name: Lobbying Disclosure Act filings (LDA.gov)
+    tier: A
+    tier_approved: 2026-11-10
+    license: cleared-with-conditions
+    license_checked: 2026-11-10
+    conditions:
+      - Cite the retrieval date.
+      - State that the Senate "cannot vouch for the data or analyses derived from these data".
+      - Never use the Senate seal; never modify or misrepresent the data while citing the Senate.
+      - Use LDA.gov; the older lda.senate.gov site was scheduled to retire after July 31, 2026.
+    credit: U.S. Senate Office of Public Records (LDA.gov), retrieved [date]
+    covers: Who lobbies, for which clients, on which issues, and reported spending, quarterly.
+    known_breaks:
+      - Spending is reported in ranges and rounded amounts; issue codes are self-reported.
+      - Amendments replace originals; a plain client-name search pulls in unrelated clients and misses "FIRM ON BEHALF OF CLIENT" forms.
+    access: API (higher rate limit with a free key)
+    status: active
+    publish: true
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/lobbying/, schedule: monthly (23rd)}
+    used_by: [ai-money-report, dorkgraphs, congress-cards]
+    notes: First pipeline to move into lab-data (milestone D3), when Congress Cards starts.
+
+  - id: fec
+    name: Federal Election Commission
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared-with-conditions
+    license_checked: 2026-11-09
+    conditions:
+      - Aggregates only - totals and counts by committee, candidate, industry or place.
+      - Never show, list or use individual contributors' names or contact details, in any form.
+    credit: Federal Election Commission
+    covers: Campaign contributions and spending by candidates, parties and committees.
+    known_breaks: []
+    access: API
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs, congress-cards]
+    notes: Pipeline is built in lab-data from day one (milestone D3).
+
+  - id: congress-votes
+    name: Congress.gov and House and Senate roll call votes
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared
+    license_checked: 2026-11-09
+    conditions: []
+    credit: Congress.gov, Office of the Clerk of the House, U.S. Senate
+    covers: Bill text, sponsors, status and recorded votes.
+    known_breaks: []
+    access: API
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs, congress-cards]
+    notes: Statements of a bill's intent come from the official record or CBO, not news coverage. Pipeline is built in lab-data from day one (milestone D3).
+
+  - id: congress-disclosures
+    name: Congressional financial disclosures (House Clerk and Senate)
+    tier: A
+    tier_approved: 2026-11-10
+    license: cleared-with-conditions
+    license_checked: 2026-11-10
+    conditions:
+      - Federal ethics law limits commercial use to news and communications media publishing to the general public; the lab relies on that exception (confirmed by the founder 2026-11-10).
+      - Amounts are value ranges; show ranges, never invented point values.
+      - Never imply wrongdoing from a trade alone; apply evenly across parties.
+    credit: Office of the Clerk, U.S. House of Representatives; Secretary of the Senate
+    covers: Members' annual financial disclosures and STOCK Act periodic transaction reports.
+    known_breaks: []
+    access: downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs, congress-cards]
+    notes: Congress Cards profiles don't publish before the LLC exists (milestone S2).
+
+  - id: ecb-fx
+    name: European Central Bank euro reference rates
+    tier: A
+    tier_approved: null
+    license: confirm
+    license_checked: null
+    conditions: []
+    credit: European Central Bank
+    covers: Daily euro foreign exchange reference rates, used to convert foreign-currency capital raises on the filing date.
+    known_breaks:
+      - The ECB says the rates are published for information only; no EUR/RUB rate since March 1, 2022.
+    access: history zip download
+    status: active
+    publish: false
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/raises/fx.py, schedule: with capital raises}
+    used_by: [ai-money-report]
+    notes: Proposed tier A. Check the ECB's reuse terms before AI Money Report issue 001 publishes a converted figure.
+
+  - id: warn-california
+    name: California EDD WARN reports
+    tier: A
+    tier_approved: null
+    license: confirm
+    license_checked: null
+    conditions: []
+    credit: California Employment Development Department
+    covers: Layoff and closure notices filed in California, current fiscal year from July 1.
+    known_breaks:
+      - Notices give no reasons; no notice is called an AI layoff unless the company's own filing says so.
+      - The employer named before any parentheses is the one counted (contractors list their client in parentheses).
+    access: xlsx download
+    status: active
+    publish: false
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
+    used_by: [ai-money-report]
+    notes: State data needs its own license check. Proposed tier A.
+
+  - id: warn-washington
+    name: Washington ESD WARN notices
+    tier: A
+    tier_approved: null
+    license: confirm
+    license_checked: null
+    conditions: []
+    credit: Washington Employment Security Department
+    covers: Layoff and closure notices filed in Washington.
+    known_breaks:
+      - Same rules as California WARN.
+    access: search page
+    status: active
+    publish: false
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
+    used_by: [ai-money-report]
+    notes: State data needs its own license check. Proposed tier A.
+
+  - id: warn-texas
+    name: Texas Workforce Commission WARN notices
+    tier: A
+    tier_approved: null
+    license: confirm
+    license_checked: null
+    conditions: []
+    credit: Texas Workforce Commission
+    covers: Layoff and closure notices filed in Texas, current calendar year.
+    known_breaks:
+      - Same rules as California WARN.
+    access: JSON via the City of Austin's open data portal, which republishes the TWC data
+    status: active
+    publish: false
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
+    used_by: [ai-money-report]
+    notes: Pulled through a republisher, not the original publisher; check both TWC's and Austin's terms, or switch to TWC directly. Proposed tier A.
+
+  - id: pjm-capacity
+    name: PJM capacity auction results
+    tier: R
+    tier_approved: null
+    license: cleared-with-conditions
+    license_checked: 2026-11-10
+    conditions:
+      - Reported-figures rule - use PJM's own public announcement, word it as reported, keep the URL.
+      - Say "grid price" for auction results; say "your bill" only with a utility or EIA retail figure.
+    credit: PJM Interconnection
+    covers: What the PJM grid pays power plants to be available, one auction a year.
+    known_breaks: []
+    access: hand-kept table from PJM's public announcements
+    status: active
+    publish: true
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: config/power.yaml, schedule: by hand after each auction}
+    used_by: [ai-money-report]
+    notes: Covered by the reported-figures rule (checked 2026-11-10). Proposed tier R. Rows cite PJM's releases as distributed by PR Newswire; PJM's own site is the better link.
+
+  - id: private-deals
+    name: Private AI deals (reported figures)
+    tier: R
+    tier_approved: null
+    license: cleared-with-conditions
+    license_checked: 2026-11-10
+    conditions:
+      - Reported-figures rule applies (see reported-figures).
+      - The weekly scout proposes rows; a person adds them. Scout results are leads, not facts.
+    credit: The publishing company, wire or outlet, named on each row
+    covers: Private lab rounds, private credit, project-finance joint ventures and loans that never touch an SEC filing.
+    known_breaks: []
+    access: hand-kept table
+    status: active
+    publish: true
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: config/private_deals.yaml, schedule: "by hand, from the weekly scout"}
+    used_by: [ai-money-report]
+    notes: Covered by the reported-figures rule (checked 2026-11-10). Proposed tier R.
+
+  - id: nasdaq-market
+    name: Nasdaq public market data endpoints
+    tier: null
+    tier_approved: null
+    license: not-cleared
+    license_checked: 2026-11-02
+    conditions:
+      - Internal analysis only. The terms don't clearly allow republishing.
+    credit: null
+    covers: Stock prices and market value for the AI Money Report's company universe.
+    known_breaks: []
+    access: public site endpoints, no key
+    status: active
+    publish: false
+    pipelines:
+      - {repo: unclebuckslab/ai-money-report, path: pipelines/market/, schedule: weekly (Sat)}
+    used_by: [ai-money-report]
+    notes: A licensed provider (Polygon or Tiingo) replaces it once there is a reader base. The AI Money Report enforces this with sources.yaml market.publishable and a test.
+
+  # ---------------------------------------------------------------- State and local
+
+  - id: denver-open-data
+    name: City and County of Denver Open Data Catalog
+    tier: A
+    tier_approved: null
+    license: cleared-with-conditions
+    license_checked: 2026-11-21
+    conditions:
+      - CC BY 3.0 - credit the City and County of Denver and indicate the license.
+      - Buyer and seller names never leave the fetch step; only entity and same-party flags are kept.
+    credit: City and County of Denver Open Data Catalog (CC BY 3.0)
+    covers: Real property sales and transfers, residential characteristics, parcels, statistical neighborhoods.
+    known_breaks:
+      - Sales history starts in 2015.
+      - Beds, baths and square footage describe the house today, not at the sale.
+      - Layer IDs changed around Oct 1, 2026 (sales 60 to 51, residential 59 to 50).
+      - Offset pagination silently stops early; page by OBJECTID.
+    access: ArcGIS hosted feature services, no key
+    status: active
+    publish: true
+    pipelines:
+      - {repo: unclebuck20/denver-dashboard, path: scripts/fetch.py, schedule: weekly (Mon)}
+    used_by: [denver-sales]
+    notes: License per Denver's GIS page (CC BY 3.0). Check the dashboard's credit line shows the license. Proposed tier A.
+
+  # ---------------------------------------------------------------- International
+
+  - id: oecd
+    name: OECD
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared-with-conditions
+    license_checked: 2026-11-09
+    conditions:
+      - Some datasets include third-party data; check the dataset's source tab and get the owner's permission if it isn't OECD's.
+      - Use the dataset's own citation, or "OECD (year), (dataset), (source) DOI or URL (accessed on (date))".
+      - Use the data only; never reproduce OECD charts or text, which have stricter terms.
+    credit: OECD
+    covers: International comparisons - income, prices (PPP), hours worked, health spending, education, taxes.
+    known_breaks: []
+    access: OECD Data Explorer and API
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: world-bank-wdi
+    name: World Bank World Development Indicators
+    tier: A
+    tier_approved: 2026-11-09
+    license: cleared-with-conditions
+    license_checked: 2026-11-09
+    conditions:
+      - CC BY 4.0 - attribution required.
+      - Some indicators come from third-party providers with their own terms; check each indicator's source note.
+    credit: World Bank, World Development Indicators
+    covers: International development and economic indicators.
+    known_breaks: []
+    access: API
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  # ---------------------------------------------------------------- Surveys, research and attention
+
+  - id: pew
+    name: Pew Research Center
+    tier: B
+    tier_approved: 2026-11-09
+    license: cleared-with-conditions
+    license_checked: 2026-11-09
+    conditions:
+      - Keep Pew's copyright and other notices.
+      - Never imply Pew holds a policy position or endorses anything; never use Pew's name or logo as branding.
+      - Survey datasets are licensed separately and limited to excerpts; analyses of Pew datasets carry a disclaimer that Pew bears no responsibility for them.
+      - Content Pew attributes to a third party can't be republished as a standalone file.
+    credit: Pew Research Center
+    covers: Public opinion and beliefs, generations, religion, media, technology use.
+    known_breaks:
+      - Most surveys moved from phone to the online American Trends Panel; trends crossing a mode change need a caveat.
+    access: reports and dataset downloads
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: gss
+    name: General Social Survey (NORC at the University of Chicago)
+    tier: B
+    tier_approved: 2026-11-09
+    license: confirm
+    license_checked: 2026-11-09
+    conditions:
+      - Request written confirmation from NORC (commhelp@norc.org) before use.
+    credit: General Social Survey, a project of the independent research organization NORC at the University of Chicago
+    covers: American attitudes and behavior since 1972.
+    known_breaks:
+      - The 2021 survey moved mainly to web; trends crossing 2021 need a caveat.
+    access: downloads
+    status: blocked
+    publish: false
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: opportunity-insights
+    name: Opportunity Insights
+    tier: B
+    tier_approved: 2026-11-09
+    license: confirm
+    license_checked: 2026-11-09
+    conditions:
+      - Terms for reusing the underlying data, and for commercial use, aren't stated; get written confirmation first.
+      - Figures from journal articles need the journal's permission.
+    credit: Opportunity Insights (plus U.S. Census Bureau for Opportunity Atlas data)
+    covers: Economic mobility by county and neighborhood, college outcomes, social capital.
+    known_breaks: []
+    access: downloads
+    status: blocked
+    publish: false
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: zillow-research
+    name: Zillow Research
+    tier: B
+    tier_approved: 2026-11-09
+    license: confirm
+    license_checked: 2026-11-09
+    conditions:
+      - Commercial use isn't addressed; confirm before first use. Never use listing-level data.
+    credit: Zillow
+    covers: Home values (ZHVI), rents (ZORI), affordability by metro and ZIP.
+    known_breaks: []
+    access: downloads
+    status: blocked
+    publish: false
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: Census ACS and BLS shelter CPI cover most housing work without Zillow. Zillow blocks automated access, so Denver links use its address search rather than verified pages.
+
+  - id: gallup
+    name: Gallup
+    tier: B
+    tier_approved: 2026-11-09
+    license: not-cleared
+    license_checked: 2026-11-09
+    conditions:
+      - All use needs Gallup's permission through the Copyright Clearance Center; scraping is prohibited.
+    credit: Gallup
+    covers: Long-running public opinion series.
+    known_breaks: []
+    access: none
+    status: blocked
+    publish: false
+    pipelines: []
+    used_by: []
+    notes: Use Pew, and the GSS once cleared.
+
+  - id: wikimedia-pageviews
+    name: Wikimedia pageviews
+    tier: B
+    tier_approved: 2026-11-10
+    license: cleared-with-conditions
+    license_checked: 2026-11-10
+    conditions:
+      - CC0. Identify the client with a user agent and contact; send requests one at a time.
+    credit: Wikimedia Foundation pageview data
+    covers: Daily views of every Wikipedia article, as a measure of attention.
+    known_breaks:
+      - Measures attention on Wikipedia, not overall popularity; use the "user" agent type to exclude known bots.
+    access: API
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: google-trends
+    name: Google Trends
+    tier: B
+    tier_approved: 2026-11-10
+    license: confirm
+    license_checked: 2026-11-10
+    conditions:
+      - Citation "Data source - Google Trends (https://www.google.com/trends)"; commercial use not addressed directly.
+    credit: "Data source: Google Trends"
+    covers: Relative search interest over time and by state.
+    known_breaks:
+      - Values are a 0-100 index relative to the window's peak; samples differ between pulls; never compare indexes from separate pulls.
+    access: web tool
+    status: blocked
+    publish: false
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: nielsen
+    name: Nielsen public announcements
+    tier: R
+    tier_approved: 2026-11-10
+    license: cleared-with-conditions
+    license_checked: 2026-11-10
+    conditions:
+      - Only figures Nielsen publishes in public announcements, never subscription data; worded as "Nielsen reports"; use the final figure and note revisions.
+    credit: Nielsen
+    covers: Viewership for major broadcasts.
+    known_breaks: []
+    access: public announcements
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs]
+    notes: null
+
+  - id: reported-figures
+    name: Reported figures (general rule)
+    tier: R
+    tier_approved: 2026-11-10
+    license: cleared-with-conditions
+    license_checked: 2026-11-10
+    conditions:
+      - Use only the organization's own required filing, the measuring organization's own announcement, or a figure matching in at least two independent reputable outlets.
+      - Never a single anonymously sourced report, a paywalled dataset reproduced wholesale, or a leaked document.
+      - Cite where it was published, keep the URL with the fact, word it as reported, and name who reported it.
+    credit: The publisher named with each figure
+    covers: Business, entertainment and attention numbers without a single official source.
+    known_breaks: []
+    access: various
+    status: listed
+    publish: true
+    pipelines: []
+    used_by: [dorkgraphs, ai-money-report]
+    notes: Individual facts generally aren't copyrightable in the U.S. (Feist v. Rural Telephone, 1991); republishing a dataset is different. Newsroom standard, not legal advice.
+
+  - id: opensecrets
+    name: OpenSecrets
+    tier: null
+    tier_approved: null
+    license: not-cleared
+    license_checked: 2026-11-10
+    conditions:
+      - API terms are limited to individual, non-commercial use; automated access is not allowed.
+    credit: null
+    covers: Campaign finance and lobbying, categorized by industry.
+    known_breaks: []
+    access: none
+    status: blocked
+    publish: false
+    pipelines: []
+    used_by: []
+    notes: Use FEC and LDA directly; any industry categorization is done in-house with the method disclosed.
+
+# Tools for finding data. They are never the source a figure is credited to.
+discovery_tools:
+  - id: fred
+    name: FRED (Federal Reserve Bank of St. Louis)
+    checked: 2026-11-09
+    rule: Use FRED to find series, then ingest from the original agency and credit it. Never pull a series marked "Copyrighted - Pre-approval required". FRED's terms permit personal, non-commercial use only.
+  - id: our-world-in-data
+    name: Our World in Data
+    checked: 2026-11-09
+    rule: Use OWID to find datasets and providers, then ingest from and credit the original provider after checking its license.
+  - id: ipums
+    name: IPUMS
+    checked: 2026-11-09
+    rule: Prefer published Census tables. Use IPUMS only after written confirmation that derived aggregates may be published, and cite it as required.
+  - id: internet-archive
+    name: Internet Archive (Wayback Machine)
+    checked: null
+    rule: An access route only, for publishers that block automated downloads (CBO). Fetch the unmodified copy of the publisher's URL, record both URLs, and credit the publisher.

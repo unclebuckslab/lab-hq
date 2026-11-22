@@ -10,7 +10,7 @@ Adapted from the Data Product Starter in the denver-dashboard repo.
 | --- | --- | --- |
 | 1. Instructions | How agents operate the project | `CLAUDE.md` pointing to lab-hq's `INDEX.md`, plus the project `handbook/` |
 | 2. Repo | Code, data snapshots, docs: the source of truth | A repo in the `unclebuckslab` org, public unless the data is private |
-| 3. Data flow | Scheduled pull from an API or feed | GitHub Actions cron, `scripts/fetch.py` writing to `data/raw/` |
+| 3. Data flow | Scheduled pull from an API or feed | GitHub Actions cron, `scripts/fetch.py` writing snapshots to the `snapshots` branch (or reading them from `lab-data` for a shared source) |
 | 4. Processing | Cleaning, joining, derived fields, the "so what" | `scripts/build.py` writing one JSON file with a documented contract |
 | 5. Page | What people look at | Static HTML/JS on GitHub Pages reading that JSON, listed on the lab site |
 
@@ -26,7 +26,7 @@ The founder directs; agents build. Confirm scope before anything substantial.
 - Which sources?
 - What does the page need to answer at a glance?
 
-**Step 1: Source recon, before any code.** For each source, find the endpoint, auth needs, rate limits and page size, row counts, how far back history goes, how often it updates, and the licence or terms. Report surprises (missing history, broken fields) before building on them.
+**Step 1: Source recon, before any code.** Check [registry/sources.yaml](../registry/sources.yaml) first: if another project already pulls the source, move that pipeline into `lab-data` and read its snapshots instead of building a second one. For a new source, find the endpoint, auth needs, rate limits and page size, row counts, how far back history goes, how often it updates, and the licence or terms, then add its record (proposed tier, `publish: false` until the licence is checked). Report surprises (missing history, broken fields) before building on them.
 
 **Step 2: First pull in Actions.** Stand up the repo and workflow, pull a real slice and profile it: what's clean, what's junk, nulls and outliers, what keys join the tables.
 
@@ -50,7 +50,7 @@ repo/
   scripts/config.py               # what's covered: the one place to change scope
   scripts/fetch.py                # pull, guards, data/raw/ (report through ::notice:: and ::error:: annotations)
   scripts/build.py                # clean, funnel, docs/data.json (publish guard against the previous build)
-  data/raw/                       # committed snapshots so build.py runs offline
+  data/raw/                       # a worktree of the snapshots branch (gitignored on main), so build.py runs offline
   docs/index.html, docs/js/common.js, docs/vendor/   # static pages, shared helpers, self-hosted libraries
   tests/smoke_test.py             # Playwright: renders, filters work, no JS errors, no sideways scroll
   handbook/                       # from templates/project/
@@ -76,3 +76,4 @@ repo/
 - Two sources' "neighborhood" or "category" fields rarely match. Join on geometry or an official key.
 - Attributes are often the current state, not the state at the time of the event (house size today vs. at sale). Say so on the page.
 - Never commit a data file built locally in a sandbox that lacked a source. Let the Action build what ships.
+- Git history is the wrong home for bulk data. The AI Money Report's snapshots branch grew to 253 MB in five days before compaction. Keep raw pulls off `main` and follow the snapshot rules in `RESEARCH_STANDARDS.md`.
