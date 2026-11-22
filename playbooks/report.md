@@ -18,11 +18,11 @@ sources ──► pipelines/<source>/ ──► facts file ──► draft ─�
                                        records)                   matched to a fact)
 ```
 
-- **One pipeline per source**, each with fail-closed guards and a run log.
+- **One pipeline per source**, each with fail-closed guards and a run log. Every source is in [registry/sources.yaml](../registry/sources.yaml); a source another project already pulls moves into `lab-data` and both read its snapshots; it's never pulled twice.
 - **Structured sources first.** Filings, official datasets and APIs beat scraping. A hand-kept, sourced table beats a fragile scraper for numbers that change once a year.
-- **The facts file is the contract.** Every number the draft may use is a provenance record in it. The draft writer can't introduce a number that isn't there.
+- **The facts file is the contract.** Every number the draft may use is a provenance record in it. The draft writer can't introduce a number that isn't there. Once an issue ships, its checked facts go in `facts/` for other projects to reuse (see `RESEARCH_STANDARDS.md`).
 - **Issues assemble themselves.** On the schedule, an Action builds the facts file and opens a pull request with a starting draft. The founder edits and approves in that PR.
-- **Snapshots are saved** to a branch or release assets, so any issue can be rebuilt from what was known at the time.
+- **Snapshots are saved** in the lab format: newest runs on a `snapshots` branch, older ones in monthly release assets, each with a manifest (see `RESEARCH_STANDARDS.md`). Any issue can be rebuilt from what was known at the time.
 
 ## The extraction layer
 
@@ -40,7 +40,7 @@ sources ──► pipelines/<source>/ ──► facts file ──► draft ─�
 - [TRUST_RULES.md](../handbook/TRUST_RULES.md) and [WRITING_RULES.md](../handbook/WRITING_RULES.md) pass.
 - Coverage gaps are stated next to the data they affect.
 - Labels (fact, stated, our read) are applied.
-- The corrections log is current.
+- The corrections log is current, and no reused checked fact has a later correction in its owning project.
 - The PR carries the `publish` label and the founder's approval.
 
 ## Operations

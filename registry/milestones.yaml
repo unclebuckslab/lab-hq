@@ -76,7 +76,7 @@ milestones:
 
   - id: M4
     name: Congress Cards defined
-    after: [M1, S2]
+    after: [M1, S2, D2]
     est_hours: 8
     actual_hours: null
     status: not-started
@@ -105,3 +105,27 @@ milestones:
     actual_hours: null
     status: not-started
     done_means: One project's build kit packaged and tested; sold only once its trigger in MONEY_RULES.md is met.
+
+  - id: D1
+    name: Lab source registry
+    after: [M1]
+    est_hours: 4
+    actual_hours: null
+    status: in-progress
+    done_means: registry/sources.yaml holds every source the lab pulls or lists (DorkGraphs library, AI Money Report, Denver), each with tier, license and check date, credit, known breaks, access, owning pipeline and reading projects; validate.py checks it; the founder has ruled on the proposed tiers; DorkGraphs' source library points to it. The Denver FRED/BLS credit fix lands when Denver moves into the lab org.
+
+  - id: D2
+    name: One snapshot and provenance format
+    after: [D1]
+    est_hours: 3
+    actual_hours: null
+    status: in-progress
+    done_means: The snapshot, provenance and checked-fact formats are in RESEARCH_STANDARDS.md and the data-product and report playbooks; DorkGraphs keeps raw pulls on a snapshots branch instead of main, before its Jan 11 launch.
+
+  - id: D3
+    name: lab-data repo with shared ingest
+    after: [D2]
+    est_hours: 10
+    actual_hours: null
+    status: not-started
+    done_means: unclebuckslab/lab-data exists from the template; FEC and Congress.gov vote pipelines and the AI Money Report's lobbying pipeline run there with guards, run logs, health and quality checks; the AI Money Report reads lobbying from a pinned lab-data snapshot; sources.yaml points at the new pipelines.

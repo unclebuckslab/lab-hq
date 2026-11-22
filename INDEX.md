@@ -19,7 +19,7 @@ Claude Projects and other tools read these files by link, never as uploaded copi
 | --- | --- |
 | [handbook/GOVERNANCE.md](handbook/GOVERNANCE.md) | What agents may do alone, the approval tiers, the kill switch |
 | [handbook/SYSTEM_OF_RECORD.md](handbook/SYSTEM_OF_RECORD.md) | Where each kind of information lives, and where it never lives |
-| [handbook/RESEARCH_STANDARDS.md](handbook/RESEARCH_STANDARDS.md) | Sources, provenance records, labels, reproducibility |
+| [handbook/RESEARCH_STANDARDS.md](handbook/RESEARCH_STANDARDS.md) | Sources, snapshots, provenance records, checked facts, labels, reproducibility |
 | [handbook/TRUST_RULES.md](handbook/TRUST_RULES.md) | The rules every publication follows before it ships |
 | [handbook/AGENT_SAFETY.md](handbook/AGENT_SAFETY.md) | The read/act boundary, token scopes, run budgets, eval gates |
 | [handbook/CONVENTIONS.md](handbook/CONVENTIONS.md) | Repo layout, naming, branches, labels, hours logging |
@@ -30,6 +30,7 @@ Claude Projects and other tools read these files by link, never as uploaded copi
 | --- | --- |
 | [registry/projects.yaml](registry/projects.yaml) | Every project: type, stage, status, repo, hours |
 | [registry/milestones.yaml](registry/milestones.yaml) | Lab milestones: estimated vs actual hours, status, what done means |
+| [registry/sources.yaml](registry/sources.yaml) | Every data source: tier, license, credit, known breaks, which repo pulls it, which projects use it |
 | [registry/README.md](registry/README.md) | The registry's fields and how to update them |
 | [decisions/](decisions/) | Lab-level decisions, one dated file each |
 
@@ -48,3 +49,4 @@ Not written yet; don't look for them.
 
 - `handbook/VOICE.md` and `handbook/CHARACTER.md`, plus `brand/` (interviews and writing samples): milestone B1.
 - `.claude/agents/`, `.claude/skills/`, `evals/` and the scheduled workflows: milestone M3.
+- The `unclebuckslab/lab-data` repo with shared ingest: milestone D3, built when Congress Cards starts.
