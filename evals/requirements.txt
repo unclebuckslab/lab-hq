@@ -1,0 +1,4 @@
+# For evals/run.py (live runs). evals/check.py and registry/validate.py need only PyYAML.
+# Pinned to the versions ai-money-report runs.
+PyYAML==6.0.3
+anthropic==2.3.0
