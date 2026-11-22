@@ -30,6 +30,8 @@ STATUSES = {"in-the-lab", "live", "paused", "archived", "parked"}
 
 MILESTONE_FIELDS = {"id", "name", "after", "est_hours", "actual_hours", "status", "done_means"}
 MILESTONE_STATUSES = {"not-started", "in-progress", "done"}
+# Id prefixes from registry/README.md: S setup, M lab, B brand, D data layer, P project, L launch, K kit.
+MILESTONE_ID_RE = re.compile(r"^[SMBDPLK][0-9]+$")
 
 SOURCE_FIELDS = {
     "id", "name", "tier", "tier_approved", "license", "license_checked", "conditions",
@@ -57,6 +59,8 @@ def check_milestones(problems):
         problems.append("milestones: duplicate ids")
     for m in milestones:
         where = f"milestone {m.get('id')}"
+        if not MILESTONE_ID_RE.match(str(m.get("id"))):
+            problems.append(f"{where}: id must be a prefix from registry/README.md (S, M, B, D, P, L, K) plus a number")
         missing = MILESTONE_FIELDS - m.keys()
         extra = m.keys() - MILESTONE_FIELDS
         if missing:
