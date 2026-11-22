@@ -122,7 +122,7 @@ sources:
   - id: cms
     name: Centers for Medicare & Medicaid Services
     tier: A
-    tier_approved: null
+    tier_approved: 2026-11-21
     license: confirm
     license_checked: null
     conditions: []
@@ -136,7 +136,7 @@ sources:
     pipelines:
       - {repo: unclebuckslab/dorkgraphs, path: pipeline/ingest/fetch_sources.py, schedule: manual}
     used_by: [dorkgraphs]
-    notes: Pulled for DorkGraphs report r001 but missing from DorkGraphs' source library. Proposed tier A; needs the founder's tier approval and a license check (federal work, so likely cleared) before r001 publishes.
+    notes: Pulled for DorkGraphs report r001 before it had a library entry. Tier A approved 2026-11-21; needs a license check (federal work, so likely cleared) before r001 publishes.
 
   - id: treasury
     name: U.S. Treasury (Fiscal Data, USAspending)
@@ -469,7 +469,7 @@ sources:
   - id: ecb-fx
     name: European Central Bank euro reference rates
     tier: A
-    tier_approved: null
+    tier_approved: 2026-11-21
     license: confirm
     license_checked: null
     conditions: []
@@ -483,12 +483,12 @@ sources:
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/raises/fx.py, schedule: with capital raises}
     used_by: [ai-money-report]
-    notes: Proposed tier A. Check the ECB's reuse terms before AI Money Report issue 001 publishes a converted figure.
+    notes: Check the ECB's reuse terms before AI Money Report issue 001 publishes a converted figure.
 
   - id: warn-california
     name: California EDD WARN reports
     tier: A
-    tier_approved: null
+    tier_approved: 2026-11-21
     license: confirm
     license_checked: null
     conditions: []
@@ -503,12 +503,12 @@ sources:
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
     used_by: [ai-money-report]
-    notes: State data needs its own license check. Proposed tier A.
+    notes: State data needs its own license check.
 
   - id: warn-washington
     name: Washington ESD WARN notices
     tier: A
-    tier_approved: null
+    tier_approved: 2026-11-21
     license: confirm
     license_checked: null
     conditions: []
@@ -522,12 +522,12 @@ sources:
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
     used_by: [ai-money-report]
-    notes: State data needs its own license check. Proposed tier A.
+    notes: State data needs its own license check.
 
   - id: warn-texas
     name: Texas Workforce Commission WARN notices
     tier: A
-    tier_approved: null
+    tier_approved: 2026-11-21
     license: confirm
     license_checked: null
     conditions: []
@@ -541,12 +541,12 @@ sources:
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
     used_by: [ai-money-report]
-    notes: Pulled through a republisher, not the original publisher; check both TWC's and Austin's terms, or switch to TWC directly. Proposed tier A.
+    notes: Pulled through a republisher, not the original publisher; check both TWC's and Austin's terms, or switch to TWC directly.
 
   - id: pjm-capacity
     name: PJM capacity auction results
     tier: R
-    tier_approved: null
+    tier_approved: 2026-11-21
     license: cleared-with-conditions
     license_checked: 2026-11-10
     conditions:
@@ -561,12 +561,12 @@ sources:
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: config/power.yaml, schedule: by hand after each auction}
     used_by: [ai-money-report]
-    notes: Covered by the reported-figures rule (checked 2026-11-10). Proposed tier R. Rows cite PJM's releases as distributed by PR Newswire; PJM's own site is the better link.
+    notes: Covered by the reported-figures rule (checked 2026-11-10). Rows cite PJM's releases as distributed by PR Newswire; PJM's own site is the better link.
 
   - id: private-deals
     name: Private AI deals (reported figures)
     tier: R
-    tier_approved: null
+    tier_approved: 2026-11-21
     license: cleared-with-conditions
     license_checked: 2026-11-10
     conditions:
@@ -581,7 +581,7 @@ sources:
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: config/private_deals.yaml, schedule: "by hand, from the weekly scout"}
     used_by: [ai-money-report]
-    notes: Covered by the reported-figures rule (checked 2026-11-10). Proposed tier R.
+    notes: Covered by the reported-figures rule (checked 2026-11-10).
 
   - id: nasdaq-market
     name: Nasdaq public market data endpoints
@@ -607,7 +607,7 @@ sources:
   - id: denver-open-data
     name: City and County of Denver Open Data Catalog
     tier: A
-    tier_approved: null
+    tier_approved: 2026-11-21
     license: cleared-with-conditions
     license_checked: 2026-11-21
     conditions:
@@ -626,7 +626,7 @@ sources:
     pipelines:
       - {repo: unclebuck20/denver-dashboard, path: scripts/fetch.py, schedule: weekly (Mon)}
     used_by: [denver-sales]
-    notes: License per Denver's GIS page (CC BY 3.0). Check the dashboard's credit line shows the license. Proposed tier A.
+    notes: License per Denver's GIS page (CC BY 3.0). Check the dashboard's credit line shows the license.
 
   # ---------------------------------------------------------------- International
 

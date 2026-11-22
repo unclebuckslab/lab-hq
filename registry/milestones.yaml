@@ -111,7 +111,7 @@ milestones:
     after: [M1]
     est_hours: 4
     actual_hours: null
-    status: in-progress
+    status: done
     done_means: registry/sources.yaml holds every source the lab pulls or lists (DorkGraphs library, AI Money Report, Denver), each with tier, license and check date, credit, known breaks, access, owning pipeline and reading projects; validate.py checks it; the founder has ruled on the proposed tiers; DorkGraphs' source library points to it. The Denver FRED/BLS credit fix lands when Denver moves into the lab org.
 
   - id: D2
@@ -119,7 +119,7 @@ milestones:
     after: [D1]
     est_hours: 3
     actual_hours: null
-    status: in-progress
+    status: done
     done_means: The snapshot, provenance and checked-fact formats are in RESEARCH_STANDARDS.md and the data-product and report playbooks; DorkGraphs keeps raw pulls on a snapshots branch instead of main, before its Jan 11 launch.
 
   - id: D3
