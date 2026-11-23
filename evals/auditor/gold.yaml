@@ -85,16 +85,16 @@ cases:
     checked: "Both members of the same do-not-sum group; leases and purchase commitments can describe the same data center"
 
   - name: "A source that isn't cleared to publish"
-    draft: "U.S. health spending reached $4.9 trillion in 2023."
+    draft: "Google searches for \"data center\" in the US reached their highest level in Google Trends' record in October 2026."
     records:
-      - {fact_id: nhe-total-2023, claim: "National health expenditure, 2023", value: 4900000000000, unit: USD, as_of: 2023-12-31, source: cms,
-         source_url: "https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical",
-         snapshot: {repo: unclebuckslab/dorkgraphs, dataset: cms-nhe-historical, stamp: 2026-11-15, file: NHE2023.zip, sha256: "eval-placeholder"}, method: Total from the NHE historical tables, label: fact}
-    registry_ids: [cms]
+      - {fact_id: trends-data-center-2026-10, claim: "US Google Trends interest for 'data center', October 2026, relative to its record", value: null, unit: null, as_of: 2026-10-31, source: google-trends,
+         source_url: "https://trends.google.com/trends/explore?geo=US&q=data%20center",
+         snapshot: {repo: unclebuckslab/dorkgraphs, dataset: google-trends, stamp: 2026-11-15, file: data-center.csv, sha256: "eval-placeholder"}, method: Monthly series from the Trends explore page, label: fact}
+    registry_ids: [google-trends]
     expect:
       verdict: fail
-      claims: [{contains: "4.9 trillion", status: fail, problems: [source-not-publishable]}]
-    checked: "registry/sources.yaml: cms publish false until its license is checked (Nov 21)"
+      claims: [{contains: "data center", status: fail, problems: [source-not-publishable]}]
+    checked: "Draft and record written for the case; the answer turns on the source. registry/sources.yaml: google-trends publish false (Nov 23)"
 
   - name: "Pass: the corrected CoreWeave figure"
     draft: "CoreWeave's 9.750% notes due 2031 total $1.75 billion."

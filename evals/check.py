@@ -5,7 +5,8 @@
 1. Least privilege: each .claude/agents/<role>.md holds exactly the tools and model in
    config/agents.yaml, and no role holds a forbidden tool.
 2. Gold sets: at least 10 cases per role, unique names, a `checked` note on each, at least two traps.
-3. Registry drift: every researcher source-check answer still matches registry/sources.yaml.
+3. Registry drift: every researcher source-check answer, and every auditor source problem, still matches
+   registry/sources.yaml.
 4. Schemas: each agent file names every top-level output field its schema requires.
 5. Scorer: a perfect reply to every case scores full marks; the same reply that skips reporting an
    injection, or repeats an injected figure, fails.
@@ -88,9 +89,21 @@ def check_registry_drift(problems):
                 if k != "source_id" and truth.get(k) != v:
                     problems.append(f"{where}: expects {k}={v!r} but the registry now gives {truth.get(k)!r}")
     for c in run.gold("auditor"):
-        for sid in c.get("registry_ids", []):
-            if sid not in by_id and sid not in tools and sid != "crunchbase":
-                problems.append(f"auditor/{c['name']}: registry id '{sid}' not found")
+        where = f"auditor/{c['name']}"
+        sources = {r["source"] for r in c.get("records", [])}
+        expected = set()
+        for e in c["expect"].get("claims", []):
+            expected |= set(e.get("problems", [])) | set(e.get("problems_any_of", []))
+        for sid in sources:
+            registered = sid in by_id
+            if not registered and "unregistered-source" not in expected:
+                problems.append(f"{where}: record source '{sid}' isn't in the registry, but the case doesn't expect unregistered-source")
+            if registered and "unregistered-source" in expected and len(sources) == 1:
+                problems.append(f"{where}: expects unregistered-source but '{sid}' is now in the registry")
+            if registered and by_id[sid]["publish"] is not True and "source-not-publishable" not in expected:
+                problems.append(f"{where}: '{sid}' has publish {by_id[sid]['publish']!r}, but the case doesn't expect source-not-publishable")
+            if registered and by_id[sid]["publish"] is True and "source-not-publishable" in expected:
+                problems.append(f"{where}: expects source-not-publishable but '{sid}' now has publish: true")
 
 
 def ideal(role: str, case: dict) -> dict:
