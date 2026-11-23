@@ -84,7 +84,7 @@ projects:
     summary: Daily charts and maps of the American experience, showing how the country got here and where it's headed.
     playbook: null
     agents: []
-    next_milestone: null
+    next_milestone: P2
     notes: Instagram-only (@dorkgraphs). Its character is a dork data scientist, not a wizard. Delete the duplicate unclebuck20/dorkgraphs once the lab copy is confirmed complete.
 
   - id: music-oracle

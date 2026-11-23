@@ -129,3 +129,12 @@ milestones:
     actual_hours: null
     status: not-started
     done_means: unclebuckslab/lab-data exists from the template; FEC and Congress.gov vote pipelines and the AI Money Report's lobbying pipeline run there with guards, run logs, health and quality checks; the AI Money Report reads lobbying from a pinned lab-data snapshot; sources.yaml points at the new pipelines.
+
+  - id: P2
+    name: DorkGraphs discovery front end
+    after: [D2]
+    est_hours: 8
+    actual_hours: null
+    status: in-progress
+    done_means: The release watcher and pattern scan (DorkGraphs pipeline steps 0 and 4) run as code on the latest snapshots; a weekly workflow posts the leads digest to one issue; the release calendar entries each carry the agency schedule URL and read date; tests pass; three Sunday digests have run and Garrett has used one in a hand-run lead screen. The lead-screen agent (step 4b) is a later milestone, written from what the hand-run teaches.
+
