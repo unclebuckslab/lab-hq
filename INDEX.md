@@ -43,10 +43,19 @@ Claude Projects and other tools read these files by link, never as uploaded copi
 | [playbooks/weekly-briefing.md](playbooks/weekly-briefing.md) | What the weekly briefing checks and how it reports |
 | [templates/project/](templates/project/) | The starting files for a new project repo |
 
+## The squad
+
+| File | Read it for |
+| --- | --- |
+| [.claude/agents/](.claude/agents/) | The researcher, editor and auditor subagents: read-only, JSON output |
+| [.claude/skills/](.claude/skills/) | `research-brief`, `pre-publish` and `new-project` |
+| [config/agents.yaml](config/agents.yaml) | Each role's model, tools and budget |
+| [evals/](evals/) | Gold sets per role and how to run them; `scripts/agent_output.py` checks every reply |
+
 ## Coming next
 
 Not written yet; don't look for them.
 
 - `handbook/VOICE.md` and `handbook/CHARACTER.md`, plus `brand/` (interviews and writing samples): milestone B1.
-- `.claude/agents/`, `.claude/skills/`, `evals/` and the scheduled workflows: milestone M3.
+- The scheduled headless briefing and ops check in Actions, an eval workflow and the away runbook: the rest of milestone M3.
 - The `unclebuckslab/lab-data` repo with shared ingest: milestone D3, built when Congress Cards starts.

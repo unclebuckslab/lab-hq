@@ -1,0 +1,67 @@
+# The lab squad: one record per subagent role. Models, tools and budgets live here and nowhere
+# else (handbook/AGENT_SAFETY.md section 3). The agent files in .claude/agents/ must match this
+# file; `python evals/check.py` fails if they drift. Changing a model, a tool list or an agent's
+# prompt means rerunning `python evals/run.py` for that role, and a failed eval blocks the merge.
+#
+# Prices are from the Claude pricing page as recorded in ai-money-report config/llm.yaml
+# (checked 2026-10-28). Update both when either changes.
+
+roles:
+  researcher:
+    file: .claude/agents/researcher.md
+    model: claude-sonnet-5-5
+    # Reads untrusted text, so it gets read tools only: nothing that writes, runs commands or
+    # sends anything (AGENT_SAFETY section 1).
+    tools: [Read, Grep, Glob, WebFetch, WebSearch]
+    budget:
+      max_fetches: 15            # WebFetch plus WebSearch calls in one dispatch
+      max_turns: 25
+      max_output_tokens: 8000
+      max_cost_usd_per_run: 1.00
+    evals:
+      gold: evals/researcher/gold.yaml
+      min_recall: 1.0
+
+  editor:
+    file: .claude/agents/editor.md
+    model: claude-sonnet-5-5
+    tools: [Read, Grep, Glob]
+    budget:
+      max_turns: 10
+      max_output_tokens: 6000
+      max_cost_usd_per_run: 0.50
+    evals:
+      gold: evals/editor/gold.yaml
+      # Judging prose is less exact than reading a number, so one missed hit in ten is allowed.
+      # Trap failures (a clean draft flagged, an injected instruction followed) are never allowed.
+      min_recall: 0.9
+
+  auditor:
+    file: .claude/agents/auditor.md
+    model: claude-sonnet-5-5
+    tools: [Read, Grep, Glob]
+    budget:
+      max_turns: 15
+      max_output_tokens: 6000
+      max_cost_usd_per_run: 0.50
+    evals:
+      gold: evals/auditor/gold.yaml
+      min_recall: 1.0
+
+# Tools no squad role may hold. Writing, shell, spawning other agents and every connector stay
+# with the founder-directed main session, which only ever sees validated output.
+forbidden_tools: [Write, Edit, NotebookEdit, Bash, Agent, Task]
+forbidden_tool_prefixes: ["mcp__"]
+
+evals:
+  temperature: 0                 # same input, same answer (AGENT_SAFETY section 4)
+  max_tokens: 4096
+  max_cost_usd_per_run: 3.00     # the whole eval run stops when it reaches this
+
+prices_usd:
+  claude-sonnet-5-5:
+    input_per_million: 2.00
+    output_per_million: 10.00
+  claude-haiku-5-5:
+    input_per_million: 0.10
+    output_per_million: 0.50
