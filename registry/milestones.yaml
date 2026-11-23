@@ -110,7 +110,7 @@ milestones:
     name: Lab source registry
     after: [M1]
     est_hours: 4
-    actual_hours: null
+    actual_hours: 1.25
     status: done
     done_means: registry/sources.yaml holds every source the lab pulls or lists (DorkGraphs library, AI Money Report, Denver), each with tier, license and check date, credit, known breaks, access, owning pipeline and reading projects; validate.py checks it; the founder has ruled on the proposed tiers; DorkGraphs' source library points to it. The Denver FRED/BLS credit fix lands when Denver moves into the lab org.
 
@@ -118,7 +118,7 @@ milestones:
     name: One snapshot and provenance format
     after: [D1]
     est_hours: 3
-    actual_hours: null
+    actual_hours: 0.75
     status: done
     done_means: The snapshot, provenance and checked-fact formats are in RESEARCH_STANDARDS.md and the data-product and report playbooks; DorkGraphs keeps raw pulls on a snapshots branch instead of main, before its Jan 11 launch.
 
@@ -134,7 +134,7 @@ milestones:
     name: DorkGraphs discovery front end
     after: [D2]
     est_hours: 8
-    actual_hours: null
+    actual_hours: 0.5
     status: in-progress
     done_means: The release watcher and pattern scan (DorkGraphs pipeline steps 0 and 4) run as code on the latest snapshots; a weekly workflow posts the leads digest to one issue; the release calendar entries each carry the agency schedule URL and read date; tests pass; three Sunday digests have run and Garrett has used one in a hand-run lead screen. The lead-screen agent (step 4b) is a later milestone, written from what the hand-run teaches.
 
