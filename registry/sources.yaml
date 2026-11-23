@@ -495,9 +495,13 @@ sources:
     name: California EDD WARN reports
     tier: A
     tier_approved: 2026-11-21
-    license: confirm
-    license_checked: 2026-11-21
-    conditions: []
+    license: cleared-with-conditions
+    license_checked: 2026-11-23
+    conditions:
+      - Founder ruling 2026-11-23 (decisions/2026-11-23-warn-ruling.md) - the notices are public filings, and only facts from them are published (employer, headcount, notice and effective dates, place).
+      - Credit the state agency. Never use workers' names or contact details.
+      - A notice is never called an AI layoff; only the company's own filing can say so.
+      - State the coverage limits wherever WARN figures appear (three states, 50+ workers at one site, remote workers often reported at an office or not at all).
     credit: California Employment Development Department
     covers: Layoff and closure notices filed in California, current fiscal year from July 1.
     known_breaks:
@@ -505,49 +509,57 @@ sources:
       - The employer named before any parentheses is the one counted (contractors list their client in parentheses).
     access: xlsx download
     status: active
-    publish: false
+    publish: true
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
     used_by: [ai-money-report]
-    notes: "Checked 2026-11-21: EDD publishes its WARN Report for the public every Tuesday and Thursday but states no reuse terms. Ask the EDD Media Services Office (MediaInquiries@ca.edd.gov) in writing, or the founder rules."
+    notes: "EDD publishes its WARN Report for the public every Tuesday and Thursday but states no reuse terms (checked 2026-11-21). Cleared by founder ruling; written confirmation requested from the EDD Media Services Office (MediaInquiries@ca.edd.gov)."
 
   - id: warn-washington
     name: Washington ESD WARN notices
     tier: A
     tier_approved: 2026-11-21
-    license: confirm
-    license_checked: 2026-11-21
-    conditions: []
+    license: cleared-with-conditions
+    license_checked: 2026-11-23
+    conditions:
+      - Founder ruling 2026-11-23 (decisions/2026-11-23-warn-ruling.md) - the notices are public filings, and only facts from them are published (employer, headcount, notice and effective dates, place).
+      - Credit the state agency. Never use workers' names or contact details.
+      - A notice is never called an AI layoff; only the company's own filing can say so.
+      - State the coverage limits wherever WARN figures appear (three states, 50+ workers at one site, remote workers often reported at an office or not at all).
     credit: Washington Employment Security Department
     covers: Layoff and closure notices filed in Washington.
     known_breaks:
       - Same rules as California WARN.
     access: search page
     status: active
-    publish: false
+    publish: true
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
     used_by: [ai-money-report]
-    notes: "Checked 2026-11-21: ESD posts notices (without employee information) for public download but states no reuse terms. Ask ESD's Public Records Officer (recordsdisclosure@esd.wa.gov) in writing, or the founder rules. Never use employee names; Washington made them confidential."
+    notes: "ESD posts notices (without employee information) for public download but states no reuse terms (checked 2026-11-21). Cleared by founder ruling; written confirmation requested from ESD's Public Records Officer (recordsdisclosure@esd.wa.gov). Washington made employee information in notices confidential."
 
   - id: warn-texas
     name: Texas Workforce Commission WARN notices
     tier: A
     tier_approved: 2026-11-21
-    license: confirm
-    license_checked: 2026-11-21
-    conditions: []
+    license: cleared-with-conditions
+    license_checked: 2026-11-23
+    conditions:
+      - Founder ruling 2026-11-23 (decisions/2026-11-23-warn-ruling.md) - the notices are public filings, and only facts from them are published (employer, headcount, notice and effective dates, place).
+      - Credit the state agency. Never use workers' names or contact details.
+      - A notice is never called an AI layoff; only the company's own filing can say so.
+      - State the coverage limits wherever WARN figures appear (three states, 50+ workers at one site, remote workers often reported at an office or not at all).
     credit: Texas Workforce Commission
     covers: Layoff and closure notices filed in Texas, current calendar year.
     known_breaks:
       - Same rules as California WARN.
-    access: JSON via the City of Austin's open data portal, which republishes the TWC data
+    access: JSON from the Texas open data portal (dataset 8w53-c4f6), with the City of Austin's copy as a fallback
     status: active
-    publish: false
+    publish: true
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
     used_by: [ai-money-report]
-    notes: "Checked 2026-11-21: TWC publishes WARN notices as an Excel file but states no reuse terms, and data.gov lists the dataset with no license. The pipeline pulls the City of Austin's republished copy; switch it to TWC's own file so the lab ingests from the original publisher. Ask TWC (warn.list@twc.texas.gov) in writing, or the founder rules."
+    notes: "TWC publishes WARN notices as an Excel file and through the state open data portal (data.texas.gov) but states no reuse terms, and data.gov lists the dataset with no license (checked 2026-11-21). Cleared by founder ruling; written confirmation requested from TWC (warn.list@twc.texas.gov). The pipeline reads the state portal first and falls back to the City of Austin's copy of the same dataset."
 
   - id: pjm-capacity
     name: PJM capacity auction results
