@@ -123,20 +123,24 @@ sources:
     name: Centers for Medicare & Medicaid Services
     tier: A
     tier_approved: 2026-11-21
-    license: confirm
-    license_checked: null
-    conditions: []
+    license: cleared-with-conditions
+    license_checked: 2026-11-21
+    conditions:
+      - Public use files only (data.cms.gov, data.medicaid.gov). Never data that needs a data use agreement.
+      - Check each dataset's page for its own license; data.cms.gov says some datasets carry restrictions.
+      - Never imply CMS endorses the work.
     credit: Centers for Medicare & Medicaid Services
     covers: Health insurance marketplace enrollment (effectuated enrollment, open enrollment reports), data.cms.gov datasets.
     known_breaks:
       - Plan selections at open enrollment and effectuated (paid-up) enrollment are different measures; never mix them on one chart.
     access: data.cms.gov catalog and downloads
     status: active
-    publish: false
+    publish: true
     pipelines:
       - {repo: unclebuckslab/dorkgraphs, path: pipeline/ingest/fetch_sources.py, schedule: manual}
     used_by: [dorkgraphs]
-    notes: Pulled for DorkGraphs report r001 before it had a library entry. Tier A approved 2026-11-21; needs a license check (federal work, so likely cleared) before r001 publishes.
+    notes: "License per the data.cms.gov API guide (U.S. government works are public domain; attribution appreciated; some datasets carry their own license) and CMS's data-use policy (public use files need no data use agreement). The r001 enrollment files are public use files."
+
 
   - id: treasury
     name: U.S. Treasury (Fiscal Data, USAspending)
@@ -470,27 +474,29 @@ sources:
     name: European Central Bank euro reference rates
     tier: A
     tier_approved: 2026-11-21
-    license: confirm
-    license_checked: null
-    conditions: []
-    credit: European Central Bank
+    license: cleared-with-conditions
+    license_checked: 2026-11-21
+    conditions:
+      - Quote the source ("Source - ECB statistics") and never modify the statistics or their metadata. Converting an amount with a published rate is a use, not a modification; the converted figure is labeled an estimate with its rate and date.
+      - The ECB policy doesn't cover third-party data inside ECB releases.
+    credit: "Source: ECB statistics"
     covers: Daily euro foreign exchange reference rates, used to convert foreign-currency capital raises on the filing date.
     known_breaks:
       - The ECB says the rates are published for information only; no EUR/RUB rate since March 1, 2022.
     access: history zip download
     status: active
-    publish: false
+    publish: true
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/raises/fx.py, schedule: with capital raises}
     used_by: [ai-money-report]
-    notes: Check the ECB's reuse terms before AI Money Report issue 001 publishes a converted figure.
+    notes: License per the ESCB policy on reusing ESCB statistics (free of charge, commercial or not, with the source quoted and the statistics unmodified).
 
   - id: warn-california
     name: California EDD WARN reports
     tier: A
     tier_approved: 2026-11-21
     license: confirm
-    license_checked: null
+    license_checked: 2026-11-21
     conditions: []
     credit: California Employment Development Department
     covers: Layoff and closure notices filed in California, current fiscal year from July 1.
@@ -503,14 +509,14 @@ sources:
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
     used_by: [ai-money-report]
-    notes: State data needs its own license check.
+    notes: "Checked 2026-11-21: EDD publishes its WARN Report for the public every Tuesday and Thursday but states no reuse terms. Ask the EDD Media Services Office (MediaInquiries@ca.edd.gov) in writing, or the founder rules."
 
   - id: warn-washington
     name: Washington ESD WARN notices
     tier: A
     tier_approved: 2026-11-21
     license: confirm
-    license_checked: null
+    license_checked: 2026-11-21
     conditions: []
     credit: Washington Employment Security Department
     covers: Layoff and closure notices filed in Washington.
@@ -522,14 +528,14 @@ sources:
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
     used_by: [ai-money-report]
-    notes: State data needs its own license check.
+    notes: "Checked 2026-11-21: ESD posts notices (without employee information) for public download but states no reuse terms. Ask ESD's Public Records Officer (recordsdisclosure@esd.wa.gov) in writing, or the founder rules. Never use employee names; Washington made them confidential."
 
   - id: warn-texas
     name: Texas Workforce Commission WARN notices
     tier: A
     tier_approved: 2026-11-21
     license: confirm
-    license_checked: null
+    license_checked: 2026-11-21
     conditions: []
     credit: Texas Workforce Commission
     covers: Layoff and closure notices filed in Texas, current calendar year.
@@ -541,7 +547,7 @@ sources:
     pipelines:
       - {repo: unclebuckslab/ai-money-report, path: pipelines/layoffs/, schedule: weekly (Fri)}
     used_by: [ai-money-report]
-    notes: Pulled through a republisher, not the original publisher; check both TWC's and Austin's terms, or switch to TWC directly.
+    notes: "Checked 2026-11-21: TWC publishes WARN notices as an Excel file but states no reuse terms, and data.gov lists the dataset with no license. The pipeline pulls the City of Austin's republished copy; switch it to TWC's own file so the lab ingests from the original publisher. Ask TWC (warn.list@twc.texas.gov) in writing, or the founder rules."
 
   - id: pjm-capacity
     name: PJM capacity auction results
