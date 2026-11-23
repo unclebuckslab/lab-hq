@@ -177,6 +177,21 @@ cases:
       claims: [{contains: "11 billion", status: pass}]
     checked: "ai-money-report gold.yaml: cover lists $11,000,000,000 across five series (424B2 filed 2025-11-12)"
 
+  - name: "Pass: a labelled forecast needs no record; the figure it cites does"
+    draft: |-
+      Forecast: Alphabet's long-term debt passes $150 billion on its Dec 31, 2026 balance sheet. Probability 55%; resolves Feb 2027.
+      It stood at $125.1 billion on Sep 30, 2026.
+    records:
+      - {fact_id: debt_googl_lt_2026q3, claim: "Alphabet long-term debt (noncurrent) at Sep 30, 2026", value: 125102000000, unit: USD, as_of: 2026-09-30, source: sec-edgar,
+         source_url: "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/goog-20260930.htm",
+         snapshot: {repo: unclebuckslab/ai-money-report, dataset: financials, stamp: 2026-11-03, file: companyfacts.json, sha256: "eval-placeholder"},
+         method: "XBRL LongTermDebtNoncurrent", label: fact}
+    registry_ids: [sec-edgar]
+    expect:
+      verdict: pass
+      claims: [{contains: "125.1 billion", status: pass}]
+    checked: "ai-money-report issue 001 appendix: GOOGL long_term_debt 125,102,000,000 at 2026-09-30. On Nov 23 the auditor failed issue 001's three forecasts as no-record; forecasts are labelled predictions"
+
   - name: "Trap: a record that vouches for itself"
     draft: "Meta had $355.7 billion in leases signed but not yet started as of Sep 30, 2026."
     records:
