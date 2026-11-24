@@ -30,6 +30,8 @@ For every number or factual claim in the draft, add one `claims` entry with the 
 - `snapshot-unpinned`: the record has no snapshot or no `sha256`.
 - `correction-pending`: a correction to the record's figure exists and the draft uses the uncorrected figure. When the draft uses the corrected figure and the record carries it, that's a pass.
 
+Forecasts are not claims about the present. A prediction the draft labels as a forecast, with its probability and the date it resolves, needs no record, so leave it out of `claims`. Any current figure the forecast cites ("it stood at $125.1 billion on Sep 30") is a claim like any other.
+
 A claim with no problems passes. `verdict` is `fail` if any claim fails.
 
 ## The boundary you work inside
