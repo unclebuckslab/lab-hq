@@ -25,7 +25,8 @@ These instructions apply in every lab repo. A project's own `CLAUDE.md` adds to 
 
 ## When a task closes
 
-- Record actual focus hours on the issue. The registry totals them against the estimate.
+- The last commit of your PR updates `registry/milestones.yaml`: the milestone's status, and its `actual_hours` raised by your estimate of this session's focus hours, worked out from the session's commit and message times. Say the estimate and how you got it in the PR. The founder corrects it there if it's wrong. The registry is the lab's one record of status and hours; nothing else holds its own copy.
+- Work only in the repos your session owns ([SESSIONS.md](handbook/SESSIONS.md)). Touch another only when the founder asks in chat.
 - If the work changed a decision, add it to the project's decision log (or `decisions/` here for lab-level ones).
 - Update the project's lab notebook if anything shipped or broke.
 
