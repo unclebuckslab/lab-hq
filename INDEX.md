@@ -18,6 +18,7 @@ Claude Projects and other tools read these files by link, never as uploaded copi
 | File | Read it for |
 | --- | --- |
 | [handbook/GOVERNANCE.md](handbook/GOVERNANCE.md) | What agents may do alone, the approval tiers, the kill switch |
+| [handbook/SESSIONS.md](handbook/SESSIONS.md) | Which session owns which repo, the one record of status, how hours are estimated |
 | [handbook/SYSTEM_OF_RECORD.md](handbook/SYSTEM_OF_RECORD.md) | Where each kind of information lives, and where it never lives |
 | [handbook/RESEARCH_STANDARDS.md](handbook/RESEARCH_STANDARDS.md) | Sources, snapshots, provenance records, checked facts, labels, reproducibility |
 | [handbook/TRUST_RULES.md](handbook/TRUST_RULES.md) | The rules every publication follows before it ships |
