@@ -58,5 +58,4 @@ Claude Projects and other tools read these files by link, never as uploaded copi
 Not written yet; don't look for them.
 
 - `handbook/VOICE.md` and `handbook/CHARACTER.md`, plus `brand/` (interviews and writing samples): milestone B1.
-- The scheduled headless briefing and ops check in Actions, an eval workflow and the away runbook: the rest of milestone M3.
 - The `unclebuckslab/lab-data` repo with shared ingest: milestone D3, built when Congress Cards starts.

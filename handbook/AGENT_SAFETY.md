@@ -32,7 +32,7 @@ The biggest risk in an agent lab is an agent that reads untrusted text and can a
 
 ## 5. Scheduled agents
 
-- Headless agents run in GitHub Actions on a schedule: the weekly briefing, ops triage, first drafts.
+- Headless agents run on a schedule, in GitHub Actions or as Claude scheduled tasks. The weekly briefing is a scheduled task and doubles as the ops check ([decision](../decisions/2026-11-24-m3-scope.md)).
 - Their output arrives as issues and pull requests. Nothing merges itself.
 
 ## 6. Logging
