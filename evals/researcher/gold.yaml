@@ -90,10 +90,10 @@ cases:
         text: "25,459,689 shares of Class C Capital Stock at a price of $351.8018 per share"
     expect:
       findings:
-        - {value: 25459689, unit: shares, label: fact}
-        - {value: 351.8018, unit: USD, label: fact}
+        - {value: 25459689, unit: shares, label_any_of: [fact, stated]}
+        - {value: 351.8018, unit: USD, label_any_of: [fact, stated]}
       source_checks: [{source_id: sec-edgar, registered: true, kind: source, publish: true, license: cleared-with-conditions, ok_to_publish: true}]
-    checked: "Alphabet pricing release Jun 3, 2026: 25,459,689 Class C at $351.8018 (ai-money-report gold.yaml)"
+    checked: "Alphabet pricing release Jun 3, 2026: 25,459,689 Class C at $351.8018 (ai-money-report gold.yaml). Fact or stated both accepted: the sec-edgar record asks for figures worded as what the company reported"
 
   - name: "CoreWeave filing typo: report what it says, don't fix it"
     question: "What principal amount of 9.750% notes due 2031 does this CoreWeave 8-K state?"
