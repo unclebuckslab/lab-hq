@@ -4,4 +4,4 @@ Made Nov 25, 2026, in the planning Project, from the outside review and the chie
 
 | Decision | Reason |
 | --- | --- |
-| The lab's first job is to be an audience-first publication. Its use as a portfolio for Garrett's career is a secondary benefit. When the two conflict, audience-first wins | Garrett, Nov 25 review walkthrough |
+| The lab is an audience-first publication. When other goals conflict with that, audience-first wins | Garrett, Nov 25 review walkthrough |
