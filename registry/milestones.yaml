@@ -150,6 +150,6 @@ milestones:
     name: DorkGraphs system v1
     after: [D2]
     est_hours: 18
-    actual_hours: 4.5
+    actual_hours: 6.5
     status: in-progress
     done_means: Launch targeted Jan 11. The 18 h estimate comes from the v1 scope proposal, which still needs the founder's call; the done test comes with it.
