@@ -6,7 +6,7 @@ milestones:
     name: Lab accounts and domain
     after: []
     est_hours: 3
-    actual_hours: 0.75
+    actual_hours: 1.25
     status: in-progress
     done_means: Setup guide steps 1-8. Password vault, security keys, domain, lab email, handles reserved, GitHub org with its three repos, separate AI spend.
 
