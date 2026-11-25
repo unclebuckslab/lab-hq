@@ -94,7 +94,7 @@ milestones:
     name: Lab Desk and operating rhythm
     after: [M1]
     est_hours: 7
-    actual_hours: 2.25
+    actual_hours: 3.25
     status: in-progress
     done_means: The registry is the one record of status and hours; every session updates it in its own PR; the Lab Desk page and BOARD.md show what it says; one owning session per repo (handbook/SESSIONS.md); the weekly briefing checks all of it.
 
