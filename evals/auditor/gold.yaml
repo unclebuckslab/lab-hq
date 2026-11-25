@@ -6,7 +6,8 @@
 #   each against the SEC filing named in the record.
 # - Rules: registry/sources.yaml (publish, registered, discovery tools), ai-money-report
 #   config/do_not_sum.yaml, and RESEARCH_STANDARDS.md (labels; announced vs actually raised).
-# - Drafts are written for the case. Snapshot checksums are well-formed dummy hashes (not of real files): the
+# - Drafts are written for the case. Pass drafts word SEC figures as what the company reported, per the
+#   sec-edgar record's conditions (the auditor rightly failed a plain "Microsoft had..." on Nov 24). Snapshot checksums are well-formed dummy hashes (not of real files): the
 #   auditor checks that a record is pinned; the pre-publish skill checks the checksum itself with sha256sum.
 #   A literal placeholder made the auditor fail a good claim on Nov 24, which was a fair call.
 # - The runner sends the live registry record for each `registry_ids` entry, and says so when an
@@ -43,7 +44,7 @@ shared:
 
 cases:
   - name: "Pass: Microsoft leases match the record"
-    draft: "Microsoft had $364.6 billion in leases signed but not yet started as of Sep 30, 2026."
+    draft: "Microsoft reported $364.6 billion in leases signed but not yet started as of Sep 30, 2026, in its 10-Q."
     records: [*msft_leases]
     registry_ids: [sec-edgar]
     expect:
@@ -98,7 +99,7 @@ cases:
     checked: "Draft and record written for the case; the answer turns on the source. registry/sources.yaml: google-trends publish false (Nov 23)"
 
   - name: "Pass: the corrected CoreWeave figure"
-    draft: "CoreWeave's 9.750% notes due 2031 total $1.75 billion."
+    draft: "CoreWeave's filings put its 9.750% notes due 2031 at $1.75 billion."
     records:
       - {fact_id: raise_crwv_2031_notes, claim: "CoreWeave 9.750% senior notes due 2031, principal", value: 1750000000, unit: USD, as_of: 2026-04-16, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000164/",
@@ -167,7 +168,7 @@ cases:
     checked: "registry/sources.yaml: fred is a discovery tool, never the credited source; the bls record notes this exact Denver fix"
 
   - name: "Pass: Verizon notes as the cover states them"
-    draft: "Verizon sold $11 billion of notes across five series in November 2025."
+    draft: "Verizon reported selling $11 billion of notes across five series in November 2025, per its prospectus."
     records:
       - {fact_id: debt_vz_2025_11_notes, claim: "Verizon notes sold, five series, per the prospectus cover", value: 11000000000, unit: USD, as_of: 2025-11-12, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/732712/000119312525277994/d66751d424b2.htm",
@@ -181,7 +182,7 @@ cases:
   - name: "Pass: a labelled forecast needs no record; the figure it cites does"
     draft: |-
       Forecast: Alphabet's long-term debt passes $150 billion on its Dec 31, 2026 balance sheet. Probability 55%; resolves Feb 2027.
-      It stood at $125.1 billion on Sep 30, 2026.
+      Alphabet reported $125.1 billion of long-term debt on Sep 30, 2026.
     records:
       - {fact_id: debt_googl_lt_2026q3, claim: "Alphabet long-term debt (noncurrent) at Sep 30, 2026", value: 125102000000, unit: USD, as_of: 2026-09-30, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/goog-20260930.htm",
