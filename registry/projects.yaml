@@ -17,7 +17,13 @@ projects:
     playbook: playbooks/report.md
     agents: [researcher, editor, ops]
     next_milestone: P1
-    notes: Moved into the unclebuckslab org on Nov 5, 2026. Stays private; about 344 Actions minutes in its first 8 days.
+    notes: >-
+      Moved into the unclebuckslab org on Nov 5, 2026; stays private. Pipeline outage (Nov 4-18) fixed and holding.
+      Nov 23-24: new issue format (cover block, empty sections left out, Editor's note signed Uncle Buck, corrections
+      line), a second AI review pass, and a phone sign-off flow at review.unclebuckslab.com (Approve / Fix / Cut /
+      Check, behind Cloudflare Access) are live in the repo and tested end to end on practice draft #2. Practice
+      draft #3 builds Mon Nov 30 with the new flow. Next: beehiiv delivery (step 8) for the issue after, then set the
+      launch date. Decision log: handbook/DECISIONS.md in the project repo (2026-11-21, 2026-11-23).
 
   - id: denver-sales
     name: Denver Neighborhood Sales
