@@ -124,5 +124,5 @@ projects:
     summary: A free app that helps one group of friends pick, commit to and book the trip they take every year.
     playbook: null
     agents: []
-    next_milestone: null
-    notes: The lab's first product people sign up for and use. Free to users; friends' crews first; the build is documented as content and packaged into Kits. Runs on its own timeline, not the launch's, but a real V1 is wanted soon. Plan docs live in Claude Docs (Decision Brief Nov 19, V1 PRD, Build Plan to Pilot) and predate the free decision, so their pricing and payment parts are out of date. Code lives in unclebuckslab/annual-outings.
+    next_milestone: P3
+    notes: The lab's first product people sign up for and use. Free to users; one friends' crew (S1) first; the build is documented as content and packaged into Kits. Runs on its own timeline; V1 goes live Mon Dec 14. Code, plan docs and decisions live in unclebuckslab/annual-outings (decisions.md is the record). Spend ceiling $100 through Feb 2027.
