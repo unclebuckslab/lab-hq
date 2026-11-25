@@ -216,6 +216,10 @@ def summarize(rows: list[dict], cfg: dict) -> tuple[str, bool]:
     for r in rows:
         if r["missed"]:
             lines += ["", f"**Missed in {r['role']} / {r['case']}:** {r['missed']}"]
+        if (r["missed"] or r["traps"]) and r.get("reply") is not None:
+            reply = r["reply"].strip()
+            reply = reply if len(reply) <= 3000 else reply[:3000] + "\n... (cut)"
+            lines += ["", f"<details><summary>Reply: {r['role']} / {r['case']}</summary>", "", "```", reply, "```", "", "</details>"]
     return "\n".join(lines[:2] + head + [""] + lines[2:]), ok
 
 
