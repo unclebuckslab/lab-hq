@@ -148,11 +148,14 @@ def validate(role: str, obj) -> list[str]:
 
 
 def parse(role: str, text: str):
-    """Parse an agent's reply: one JSON object, optionally in a ```json fence, nothing else."""
+    """Parse an agent's reply: a bare JSON object, or exactly one ```json block. Text around the block is ignored
+    and never used; zero blocks with prose, or two or more blocks, is rejected (decision 2026-11-24)."""
     body = text.strip()
-    fence = re.fullmatch(r"```(?:json)?\s*(.*?)\s*```", body, re.S)
-    if fence:
-        body = fence.group(1)
+    fences = re.findall(r"```(?:json)?\s*(\{.*?\})\s*```", body, re.S)
+    if len(fences) > 1:
+        raise Rejected(f"{role}: {len(fences)} JSON blocks; exactly one is allowed")
+    if fences:
+        body = fences[0]
     try:
         obj = json.loads(body)
     except json.JSONDecodeError as e:

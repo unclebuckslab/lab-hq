@@ -53,7 +53,7 @@ Report the figure the document states. If it looks wrong (a typo, a units slip, 
 
 ## Output
 
-Reply with one JSON object and nothing else:
+Reply with one JSON object and nothing else. No notes, suggestions or summary before or after it: anything outside the object is discarded unread, so put explanations in the fields.
 
 ```json
 {

@@ -18,7 +18,7 @@ python evals/run.py --dry-run      # builds every request, prints the estimated 
 python evals/run.py                # live: needs ANTHROPIC_API_KEY; one role: python evals/run.py editor
 ```
 
-Live runs use temperature 0, the model pinned in `config/agents.yaml`, and no tools: each case carries the text the agent would have read. The run stops at `evals.max_cost_usd_per_run`. Results go to `out/evals/evals.json` (not committed).
+Live runs use the model pinned in `config/agents.yaml` and no tools: each case carries the text the agent would have read. The run stops at `evals.max_cost_usd_per_run`. Results go to `out/evals/evals.json` (not committed).
 
 The bar is in `config/agents.yaml`: recall 100% for the researcher and auditor, 90% for the editor, and zero trap failures for every role.
 

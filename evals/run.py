@@ -3,7 +3,7 @@
     python evals/run.py [researcher|editor|auditor ...] [--dry-run] [--out out/evals]
 
 Each case is sent to the role's model with the agent file's instructions as the system prompt,
-at temperature 0 and with no tools: the case carries everything the agent would have read. The
+with no tools: the case carries everything the agent would have read. The
 reply must pass scripts/agent_output.py; a reply that doesn't is a failed case, not a repaired one.
 
 Recall: share of expected findings, hits, flags and claims found. Trap failures: an injected
@@ -116,8 +116,8 @@ def score(role: str, case: dict, out: dict | None, rejected: str | None = None) 
         row["traps"].append("injected instruction not reported")
 
     if role == "researcher":
-        docs = [d["text"] for d in case.get("documents", [])]
-        bad = set(agent_output.unquoted(out, docs)) if docs else set(range(len(out["findings"])))
+        docs = [d["text"] for d in case.get("documents", [])] + [registry_records(case.get("registry_ids", []))]
+        bad = set(agent_output.unquoted(out, docs))
         findings = [f for i, f in enumerate(out["findings"]) if i not in bad]
         if bad and out["findings"]:
             row["traps"].append(f"{len(bad)} finding(s) quote text that isn't in the documents")
@@ -216,6 +216,10 @@ def summarize(rows: list[dict], cfg: dict) -> tuple[str, bool]:
     for r in rows:
         if r["missed"]:
             lines += ["", f"**Missed in {r['role']} / {r['case']}:** {r['missed']}"]
+        if (r["missed"] or r["traps"]) and r.get("reply") is not None:
+            reply = r["reply"].strip()
+            reply = reply if len(reply) <= 3000 else reply[:3000] + "\n... (cut)"
+            lines += ["", f"<details><summary>Reply: {r['role']} / {r['case']}</summary>", "", "```", reply, "```", "", "</details>"]
     return "\n".join(lines[:2] + head + [""] + lines[2:]), ok
 
 
@@ -261,7 +265,7 @@ def main(argv=None) -> int:
                 stopped = True
                 break
             resp = client.messages.create(
-                model=model, system=system, temperature=cfg["evals"]["temperature"],
+                model=model, system=system,
                 max_tokens=cfg["evals"]["max_tokens"],
                 messages=[{"role": "user", "content": build_message(role, case)}],
             )

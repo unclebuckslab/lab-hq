@@ -6,8 +6,10 @@
 #   each against the SEC filing named in the record.
 # - Rules: registry/sources.yaml (publish, registered, discovery tools), ai-money-report
 #   config/do_not_sum.yaml, and RESEARCH_STANDARDS.md (labels; announced vs actually raised).
-# - Drafts are written for the case. Snapshot checksums are placeholders: the auditor checks that a
-#   record is pinned; the pre-publish skill checks the checksum itself with sha256sum.
+# - Drafts are written for the case. Pass drafts word SEC figures as what the company reported, per the
+#   sec-edgar record's conditions (the auditor rightly failed a plain "Microsoft had..." on Nov 24). Snapshot checksums are well-formed dummy hashes (not of real files): the
+#   auditor checks that a record is pinned; the pre-publish skill checks the checksum itself with sha256sum.
+#   A literal placeholder made the auditor fail a good claim on Nov 24, which was a fair call.
 # - The runner sends the live registry record for each `registry_ids` entry, and says so when an
 #   id isn't in the registry.
 #
@@ -36,13 +38,13 @@ shared:
     source_url: https://www.sec.gov/Archives/edgar/data/789019/000119312526436133/msft-20260930.htm
     source_title: Microsoft Form 10-Q, quarter ended Sep 30, 2026
     retrieved: 2026-11-03
-    snapshot: {repo: unclebuckslab/ai-money-report, dataset: financials, stamp: 2026-11-03, file: footnotes.json, sha256: "eval-placeholder"}
+    snapshot: {repo: unclebuckslab/ai-money-report, dataset: financials, stamp: 2026-11-03, file: footnotes.json, sha256: "1f4eb8cc1ba627cd5e971d48dd00e32f51f5ec805b3208a6ad14f5de1a308a87"}
     method: Footnote extractor, quote matched to the filing
     label: fact
 
 cases:
   - name: "Pass: Microsoft leases match the record"
-    draft: "Microsoft had $364.6 billion in leases signed but not yet started as of Sep 30, 2026."
+    draft: "Microsoft reported $364.6 billion in leases signed but not yet started as of Sep 30, 2026, in its 10-Q."
     records: [*msft_leases]
     registry_ids: [sec-edgar]
     expect:
@@ -73,10 +75,10 @@ cases:
     records:
       - {fact_id: leases_googl_2026q3, claim: "Alphabet leases not yet commenced at Sep 30, 2026", value: 130500000000, unit: USD, as_of: 2026-09-30, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/goog-20260930.htm",
-         snapshot: {repo: unclebuckslab/ai-money-report, dataset: financials, stamp: 2026-11-03, file: footnotes.json, sha256: "eval-placeholder"}, method: Footnote extractor, label: fact}
+         snapshot: {repo: unclebuckslab/ai-money-report, dataset: financials, stamp: 2026-11-03, file: footnotes.json, sha256: "9152e8b22bcd06ffc6a7cc2634898c87a51698fcf781343d3eeed40a9f7421d8"}, method: Footnote extractor, label: fact}
       - {fact_id: purchase_googl_2026q3, claim: "Alphabet purchase obligations at Sep 30, 2026", value: 924400000000, unit: USD, as_of: 2026-09-30, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/goog-20260930.htm",
-         snapshot: {repo: unclebuckslab/ai-money-report, dataset: financials, stamp: 2026-11-03, file: footnotes.json, sha256: "eval-placeholder"}, method: Footnote extractor, label: fact}
+         snapshot: {repo: unclebuckslab/ai-money-report, dataset: financials, stamp: 2026-11-03, file: footnotes.json, sha256: "1afe754e4223aa7c44226eabc69a6fd3b4071f319016fa73dd0478f0b9cd77ad"}, method: Footnote extractor, label: fact}
     registry_ids: [sec-edgar]
     do_not_sum: [*buildout]
     expect:
@@ -89,7 +91,7 @@ cases:
     records:
       - {fact_id: trends-data-center-2026-10, claim: "US Google Trends interest for 'data center', October 2026, relative to its record", value: null, unit: null, as_of: 2026-10-31, source: google-trends,
          source_url: "https://trends.google.com/trends/explore?geo=US&q=data%20center",
-         snapshot: {repo: unclebuckslab/dorkgraphs, dataset: google-trends, stamp: 2026-11-15, file: data-center.csv, sha256: "eval-placeholder"}, method: Monthly series from the Trends explore page, label: fact}
+         snapshot: {repo: unclebuckslab/dorkgraphs, dataset: google-trends, stamp: 2026-11-15, file: data-center.csv, sha256: "43b97d8b1bee201bc410791e5ab4c437ce2f53aa5e87cd7bbff83cd564f9658d"}, method: Monthly series from the Trends explore page, label: fact}
     registry_ids: [google-trends]
     expect:
       verdict: fail
@@ -97,11 +99,11 @@ cases:
     checked: "Draft and record written for the case; the answer turns on the source. registry/sources.yaml: google-trends publish false (Nov 23)"
 
   - name: "Pass: the corrected CoreWeave figure"
-    draft: "CoreWeave's 9.750% notes due 2031 total $1.75 billion."
+    draft: "CoreWeave's filings put its 9.750% notes due 2031 at $1.75 billion."
     records:
       - {fact_id: raise_crwv_2031_notes, claim: "CoreWeave 9.750% senior notes due 2031, principal", value: 1750000000, unit: USD, as_of: 2026-04-16, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000164/",
-         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "eval-placeholder"},
+         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "7767ace9f3580b166ead371bb54daeab02b317c5a964164aa6cfd178ba118fb1"},
          method: "Capital raise extractor; amount corrected by crwv-2031-notes-amount", label: fact}
     corrections:
       - {id: crwv-2031-notes-amount, fact_id: raise_crwv_2031_notes, from: 1750000, to: 1750000000,
@@ -117,7 +119,7 @@ cases:
     records:
       - {fact_id: raise_crwv_2031_notes, claim: "CoreWeave 9.750% senior notes due 2031, principal", value: 1750000000, unit: USD, as_of: 2026-04-16, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000164/",
-         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "eval-placeholder"},
+         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "2ef58979630d3c33364414f0edca149ade4419dcbe5759ef7f04b01a8c63caf1"},
          method: "Capital raise extractor; amount corrected by crwv-2031-notes-amount", label: fact}
     corrections:
       - {id: crwv-2031-notes-amount, fact_id: raise_crwv_2031_notes, from: 1750000, to: 1750000000,
@@ -133,7 +135,7 @@ cases:
     records:
       - {fact_id: raise_orcl_2026_11_common, claim: "Oracle preliminary prospectus supplement offering $10B of common stock", value: 10000000000, unit: USD, as_of: 2026-11-02, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/1341439/000119312526442729/d181425d424b5.htm",
-         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "eval-placeholder"},
+         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "39399fc93eab6f042cab8b954ba4283d88e9fb553e650a34a709c854d93e4d08"},
          method: "Capital raise extractor; preliminary filing, amount offered, not yet sold", label: stated}
     registry_ids: [sec-edgar]
     expect:
@@ -146,7 +148,7 @@ cases:
     records:
       - {fact_id: raise_crwv_2026_03_ddtl, claim: "CoreWeave delayed-draw term loan facility", value: 8500000000, unit: USD, as_of: 2026-03-30, source: crunchbase,
          source_url: "https://www.crunchbase.com/",
-         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "eval-placeholder"}, method: Copied from a database listing, label: fact}
+         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "0ab50b5b6d208c511d4f3024f77299c02baecceed0f90244986a21c12c2285b3"}, method: Copied from a database listing, label: fact}
     registry_ids: [crunchbase]
     expect:
       verdict: fail
@@ -158,7 +160,7 @@ cases:
     records:
       - {fact_id: denver-cpi-u-series, claim: "CPI-U series used to adjust Denver sale prices", value: null, unit: null, as_of: 2026-10-31, source: fred,
          source_url: "https://fred.stlouisfed.org/series/CPIAUCSL",
-         snapshot: {repo: unclebuck20/denver-dashboard, dataset: cpi, stamp: 2026-11-17, file: cpi.json, sha256: "eval-placeholder"}, method: Monthly series pulled through FRED, label: fact}
+         snapshot: {repo: unclebuck20/denver-dashboard, dataset: cpi, stamp: 2026-11-17, file: cpi.json, sha256: "d022cbff866d5da3a02cfac22dededcb52e933c2ad7f8daf49244e234d08fc2a"}, method: Monthly series pulled through FRED, label: fact}
     registry_ids: [fred]
     expect:
       verdict: fail
@@ -166,11 +168,11 @@ cases:
     checked: "registry/sources.yaml: fred is a discovery tool, never the credited source; the bls record notes this exact Denver fix"
 
   - name: "Pass: Verizon notes as the cover states them"
-    draft: "Verizon sold $11 billion of notes across five series in November 2025."
+    draft: "Verizon reported selling $11 billion of notes across five series in November 2025, per its prospectus."
     records:
       - {fact_id: debt_vz_2025_11_notes, claim: "Verizon notes sold, five series, per the prospectus cover", value: 11000000000, unit: USD, as_of: 2025-11-12, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/732712/000119312525277994/d66751d424b2.htm",
-         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "eval-placeholder"}, method: Cover table total, label: fact}
+         snapshot: {repo: unclebuckslab/ai-money-report, dataset: raises, stamp: 2026-11-03, file: raises.jsonl, sha256: "0feb296848e47df908fc3e062ab10def9647e0d80fb1586634cc3e829a2d1ea3"}, method: Cover table total, label: fact}
     registry_ids: [sec-edgar]
     expect:
       verdict: pass
@@ -180,11 +182,11 @@ cases:
   - name: "Pass: a labelled forecast needs no record; the figure it cites does"
     draft: |-
       Forecast: Alphabet's long-term debt passes $150 billion on its Dec 31, 2026 balance sheet. Probability 55%; resolves Feb 2027.
-      It stood at $125.1 billion on Sep 30, 2026.
+      Alphabet reported $125.1 billion of long-term debt on Sep 30, 2026.
     records:
       - {fact_id: debt_googl_lt_2026q3, claim: "Alphabet long-term debt (noncurrent) at Sep 30, 2026", value: 125102000000, unit: USD, as_of: 2026-09-30, source: sec-edgar,
          source_url: "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/goog-20260930.htm",
-         snapshot: {repo: unclebuckslab/ai-money-report, dataset: financials, stamp: 2026-11-03, file: companyfacts.json, sha256: "eval-placeholder"},
+         snapshot: {repo: unclebuckslab/ai-money-report, dataset: financials, stamp: 2026-11-03, file: companyfacts.json, sha256: "70d75cd88ebbf515e4d888f9982aee67b213fcc9acca0ded91545f76ed914236"},
          method: "XBRL LongTermDebtNoncurrent", label: fact}
     registry_ids: [sec-edgar]
     expect:
