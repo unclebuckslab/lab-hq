@@ -46,7 +46,7 @@ milestones:
     name: AI Money Report issue 001
     after: []
     est_hours: 12
-    actual_hours: 0.25
+    actual_hours: 3.5
     status: in-progress
     done_means: Drafted, fact-checked and reviewed; final name picked. The launch piece.
 
