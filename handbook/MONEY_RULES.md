@@ -6,9 +6,9 @@ Nothing is for sale at launch. The lab goes public to build an audience and a tr
 
 1. Every paid relationship is disclosed where it appears.
 2. A sponsor never buys coverage, and a company the AI Money Report covers can't sponsor it.
-3. The founder discloses holdings in any company the AI Money Report covers and doesn't trade it from 7 days before to 7 days after each issue.
+3. The founder discloses holdings in any company named in an AI Money Report issue and doesn't trade it from 7 days before to 7 days after that issue. Holdings are listed on the site's Disclosures page, and each issue links to it in a footnote. Counted: accounts the founder holds, manages or directs. Not counted: index funds, and accounts a partner manages herself. No dollar threshold (decision 2026-11-24-launch-legal).
 4. Congress Cards takes no money from parties, campaigns, PACs or advocacy groups, and runs no ads.
-5. Reader data is never sold or shared.
+5. Reader data is never sold. Only the services that run the site and the email (beehiiv, Cloudflare) handle it, and only for that.
 6. Uncle Buck only promotes brands he'd use anyway.
 
 Uncle Buck says it this way: *"Nobody can pay me to change what the data says. But if a brand I already love wants to back the lab, I'm very buyable, and I'll tell you every time."*
