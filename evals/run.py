@@ -3,7 +3,7 @@
     python evals/run.py [researcher|editor|auditor ...] [--dry-run] [--out out/evals]
 
 Each case is sent to the role's model with the agent file's instructions as the system prompt,
-at temperature 0 and with no tools: the case carries everything the agent would have read. The
+with no tools: the case carries everything the agent would have read. The
 reply must pass scripts/agent_output.py; a reply that doesn't is a failed case, not a repaired one.
 
 Recall: share of expected findings, hits, flags and claims found. Trap failures: an injected
@@ -261,7 +261,7 @@ def main(argv=None) -> int:
                 stopped = True
                 break
             resp = client.messages.create(
-                model=model, system=system, temperature=cfg["evals"]["temperature"],
+                model=model, system=system,
                 max_tokens=cfg["evals"]["max_tokens"],
                 messages=[{"role": "user", "content": build_message(role, case)}],
             )

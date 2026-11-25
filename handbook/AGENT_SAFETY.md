@@ -28,7 +28,7 @@ The biggest risk in an agent lab is an agent that reads untrusted text and can a
 
 - Every agent role has a gold set in `evals/`, built the way the AI Money Report's extractor evals are: real cases with known answers, including traps.
 - Any change to a prompt, model or agent definition reruns its evals. A failed eval blocks the merge.
-- Extraction runs at temperature 0 so the same input gives the same answer.
+- Current models don't take a temperature setting, so answers can vary run to run. Consistency comes from a pinned model, schema-checked output and gold sets that must pass on every change.
 
 ## 5. Scheduled agents
 

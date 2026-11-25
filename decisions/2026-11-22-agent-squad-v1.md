@@ -22,3 +22,5 @@ Proposed Nov 22, 2026, in the milestone M3 pull request. These decisions take ef
 - An eval workflow on pull requests, with the `ANTHROPIC_API_KEY` secret.
 - How project repos reach these agents and skills. They load only in sessions where lab-hq is the working repo; options are copying them through the template, or packaging them as a plugin.
 - Whether `ops` (listed for two projects in `registry/projects.yaml`) becomes a fourth role, and whether `auditor` is added to each publishing project's `agents` list.
+
+**Amended Nov 24, 2026:** the "temperature 0" in the gold-set row no longer applies. The first live eval run failed because current models and the pinned `anthropic` library don't accept a temperature setting (the AI Money Report already runs without one). Evals now run on the pinned model with no sampling setting.

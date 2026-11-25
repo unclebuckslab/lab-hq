@@ -54,7 +54,6 @@ forbidden_tools: [Write, Edit, NotebookEdit, Bash, Agent, Task]
 forbidden_tool_prefixes: ["mcp__"]
 
 evals:
-  temperature: 0                 # same input, same answer (AGENT_SAFETY section 4)
   max_tokens: 4096
   max_cost_usd_per_run: 3.00     # the whole eval run stops when it reaches this
 
