@@ -81,17 +81,17 @@ projects:
     working_name: false
     endorsement: from Uncle Buck's Laboratory
     type: brand
-    stage: define
+    stage: build
     status: in-the-lab
     show_on_site: true
     priority: 5
     repo: unclebuckslab/dorkgraphs
     public_url: null
-    summary: Daily charts and maps of the American experience, showing how the country got here and where it's headed.
+    summary: Weekly reports on the numbers behind living in America now, with the charts cut into posts for Instagram.
     playbook: null
     agents: []
     next_milestone: P2
-    notes: Instagram-only (@dorkgraphs). Its character is a dork data scientist, not a wizard. Delete the duplicate unclebuck20/dorkgraphs once the lab copy is confirmed complete.
+    notes: Website first since Nov 15. Reports live on the site at /dorkgraphs (one full report a week plus release-day pieces); Instagram posts are cut from them. Launches Jan 11, 2027 with the lab site. Reports reach lab-site as PRs opened by dorkgraphs pipeline/publish (no stored token). Formats are full report, release-day piece, paper of the week, and forecast vs. actual. Its character is a dork data scientist, not a wizard. Delete the duplicate unclebuck20/dorkgraphs once the lab copy is confirmed complete.
 
   - id: music-oracle
     name: Music prediction brand
