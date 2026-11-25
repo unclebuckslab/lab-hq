@@ -18,3 +18,5 @@ Automating the Lab Desk from the registry, flags for PRs open more than five day
 
 - P3 and P4 were AO1 and DG1 on the Lab Desk; the Lab Desk switches to the registry ids.
 - Hours for work since Nov 23 (M3 agent squad, Annual Outings AO-04 to AO-07, AI Money Report P1 work, DorkGraphs report 001) are added by each owning session at its next closing PR.
+
+**Superseded in part Nov 25, 2026:** the hours parts of this record (hours in the first and second rows, the third row, and the Open item on hours since Nov 23) are superseded by [2026-11-25-status-not-hours](2026-11-25-status-not-hours.md). Hours tracking is retired; milestones keep `status` and `done_means`.

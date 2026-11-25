@@ -1,4 +1,5 @@
-# Lab milestones: estimated vs actual focus hours. No calendar dates.
+# Lab milestones: estimated vs actual focus hours.
+# The "no calendar dates" line is superseded by decisions/2026-11-25-launch-definition.md.
 # Log actual hours as work closes. Fields are defined in registry/README.md.
 
 milestones:
@@ -50,21 +51,22 @@ milestones:
     status: in-progress
     done_means: Drafted, fact-checked and reviewed; final name picked. The launch piece.
 
+  # L1's earlier text is superseded by decisions/2026-11-25-launch-definition.md.
   - id: L1
     name: Public launch
-    after: [M2, P1]
+    after: [M2, P1, P4]
     est_hours: 2
     actual_hours: null
     status: not-started
-    done_means: Site, issue 001 and Denver go public together; reserved handles point to the site; first lab notebook entries live.
+    done_means: Public launch Mon Jan 11, 2027 (decision 2026-11-25-launch-definition). The lab site, DorkGraphs, AI Money Report issue 001 and the Denver neighborhood housing tool (as a project on the site) launch together; reserved handles point to the site; first lab notebook entries live. Annual Outings' Dec 14 go-live is separate.
 
   - id: M3
     name: Agent squad v1
     after: [M1]
     est_hours: 12
     actual_hours: 2.75
-    status: done
-    done_means: Three subagents and three skills with eval gold sets; read/act boundary enforced; evals run in Actions on every agent change and the first live run passes; the weekly briefing runs as a scheduled task and doubles as the ops check; away runbook written in lab-desk.
+    status: in-progress
+    done_means: Three subagents and three skills with eval gold sets; read/act boundary enforced; evals run in Actions on every agent change and the first live run passes; the weekly briefing runs as a scheduled task and doubles as the ops check; away runbook written in lab-desk. Reopened Nov 25, 2026 (decision 2026-11-25-shared-plugin-hybrid) until the shared lab-hq plugin is installed in the ai-money-report and dorkgraphs repos.
 
   - id: S2
     name: Legal entity and money

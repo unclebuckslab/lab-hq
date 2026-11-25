@@ -12,3 +12,5 @@ Made Nov 15–24, 2026, in the DorkGraphs Project. This settles what the Nov 15 
 | Reports are written in the dorkgraphs repo and reach lab-site as pull requests opened by its publish script, so each gets a preview before it goes live. No token is stored at launch | Keeps every site change a reviewed PR; the private repo never has to be readable by the site build |
 | The section is `/dorkgraphs` (a list of reports, a page per report, an RSS feed). Web charts come from the same spec as the Instagram post, with a phone version and a data table | One spec, two outputs, identical numbers |
 | DorkGraphs and the lab site launch together on Monday, January 11, 2027 | One launch on a strong data calendar |
+
+**Superseded in part Nov 25, 2026:** the last row (the lab site and DorkGraphs launch together on Jan 11) is superseded by [2026-11-25-launch-definition](2026-11-25-launch-definition.md). The Jan 11, 2027 launch is the lab site, DorkGraphs, AI Money Report issue 001 and the Denver tool together.

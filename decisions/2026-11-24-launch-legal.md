@@ -22,3 +22,5 @@ Made Nov 24, 2026, in the planning Project, working through section (d) of the N
 
 - The site session updates the Privacy and Disclosures pages and the AI Money Report form to match.
 - The no-betting, no-crypto sponsor rule is still to be added to MONEY_RULES with its own decision.
+
+**Superseded in part Nov 25, 2026:** MONEY_RULES rule 3 as written here (the holdings row, including the 7-day blackout either side of an issue) is superseded by [2026-11-25-holdings-flat-rule](2026-11-25-holdings-flat-rule.md): no individual trades in the AI Money Report's company universe, index funds exempt, holdings disclosed.
