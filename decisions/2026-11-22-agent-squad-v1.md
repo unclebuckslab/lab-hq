@@ -24,3 +24,5 @@ Proposed Nov 22, 2026, in the milestone M3 pull request. These decisions take ef
 - Whether `ops` (listed for two projects in `registry/projects.yaml`) becomes a fourth role, and whether `auditor` is added to each publishing project's `agents` list.
 
 **Amended Nov 24, 2026:** the "temperature 0" in the gold-set row no longer applies. The first live eval run failed because current models and the pinned `anthropic` library don't accept a temperature setting (the AI Money Report already runs without one). Evals now run on the pinned model with no sampling setting.
+
+**Amended Nov 24, 2026 (second):** an agent's reply may be one fenced JSON block with text around it; the text is ignored and never used. Zero blocks with prose, or two or more blocks, is still rejected. The first live run threw out three correct answers because the agent added a note after the JSON. The agent files now also ask for nothing outside the object.

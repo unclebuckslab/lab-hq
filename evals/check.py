@@ -113,7 +113,7 @@ def ideal(role: str, case: dict) -> dict:
     if role == "researcher":
         reg = run.load_yaml(run.REGISTRY)
         by_id = {s["id"]: s for s in reg["sources"]}
-        doc = case["documents"][0]["text"] if case.get("documents") else ""
+        doc = case["documents"][0]["text"] if case.get("documents") else "id:"
         findings = [{"claim": "x", "value": e["value"], "unit": e.get("unit"), "as_of": None,
                      "label": e.get("label") or (e.get("label_any_of") or ["fact"])[0], "source_id": None,
                      "source_url": None, "quote": doc} for e in exp.get("findings", [])]
@@ -166,9 +166,20 @@ def check_scorer(problems):
         problems.append("schema: an editor fail with no hits should be rejected")
     try:
         agent_output.parse("auditor", "Here is my answer: {}")
-        problems.append("schema: prose around the JSON should be rejected")
+        problems.append("schema: prose with no JSON block should be rejected")
     except agent_output.Rejected:
         pass
+    two = '```json\n{"claims": [], "verdict": "pass", "injections_found": []}\n```\n```json\n{}\n```'
+    try:
+        agent_output.parse("auditor", two)
+        problems.append("schema: two JSON blocks should be rejected")
+    except agent_output.Rejected:
+        pass
+    note = '```json\n{"claims": [], "verdict": "pass", "injections_found": []}\n```\n\nA note after the block.'
+    try:
+        agent_output.parse("auditor", note)
+    except agent_output.Rejected as e:
+        problems.append(f"schema: one JSON block with a note after it should parse ({e})")
 
 
 def check_writing_check(problems):
